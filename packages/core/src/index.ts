@@ -4,3 +4,5 @@ export function hello(name: string): string {
 
 export * from './config/schema';
 export type { Config } from './config/types';
+export { loadConfig } from './config/load';
+export { ConfigError } from './config/errors';
