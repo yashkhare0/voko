@@ -52,7 +52,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: Configuration & Schema (CONF)
 
-- [ ] VKO-CONF-001: Define `voko.config.json` schema with zod
+- [x] VKO-CONF-001: Define `voko.config.json` schema with zod
   - Objective: Strongly-typed config with defaults per PRD §8.
   - Files:
     - `packages/core/src/config/schema.ts`
@@ -66,7 +66,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Acceptance:
     - Passing/ failing samples cover defaults and validation errors.
 
-- [ ] VKO-CONF-002: Config loader with validation and helpful errors
+- [x] VKO-CONF-002: Config loader with validation and helpful errors
   - Objective: Read `voko.config.json`, validate, and return `Config` with defaults.
   - Files:
     - `packages/core/src/config/load.ts`
@@ -92,7 +92,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: Core Types & Engine (CORE)
 
-- [ ] VKO-CORE-001: Define IR types (NodeKind, CandidateIR, SourceLoc)
+- [x] VKO-CORE-001: Define IR types (NodeKind, CandidateIR, SourceLoc)
   - Objective: Shared IR contract adapters emit (PRD §3.1).
   - Files: `packages/core/src/types/ir.ts`
   - Steps:

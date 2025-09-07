@@ -12,7 +12,8 @@ When starting work:
 3. Implement with tests. Keep changes scoped to the task ID.
 4. Run `pnpm -r build`, `pnpm lint`, `pnpm test`.
 5. Add a changeset (`pnpm changeset`), selecting affected packages.
-6. Commit using Conventional Commits with scope and ID, e.g. `feat(core): VKO-CORE-001 define IR types`.
+6. Commit using Conventional Commits with scope and ID, e.g. `feat(core): vko-core-001 define IR types`.
+7. Mark the task as done in the (`TASKS.md`) file. [MUST]
 
 PR Guidelines:
 
