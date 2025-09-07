@@ -9,3 +9,4 @@ export { ConfigError } from './config/errors';
 export * from './types/ir';
 export * from './patch/types';
 export { applyPatches } from './patch/apply';
+export { normalizeText } from './text/normalize';
