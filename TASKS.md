@@ -112,7 +112,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Tests: Overlapping edits → conflict; back-to-front preserves offsets; imports merge.
   - Acceptance: Dry-run produces correct unified diff; write mode edits correctly.
 
-- [ ] VKO-CORE-003: Text normalization utilities
+- [x] VKO-CORE-003: Text normalization utilities
   - Objective: Collapse whitespace, normalize rich placeholders for hashing.
   - Files: `packages/core/src/text/normalize.ts`
   - Steps: Implement `normalizeText(input: string): string` with PRD rules.
