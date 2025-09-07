@@ -1,0 +1,32 @@
+{
+  "name": "@voko/adapter-vue-nuxt",
+  "version": "0.0.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0",
+    "nuxt": ">=3.0.0"
+  },
+  "dependencies": {
+    "@voko/core": "workspace:*"
+  }
+}

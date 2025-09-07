@@ -1,0 +1,58 @@
+/node_modules
+# Dependencies
+/node_modules
+**/node_modules
+
+# Build outputs
+/dist
+/build
+**/dist
+**/build
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage reports
+/coverage
+**/coverage
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Package manager lock files (keep pnpm-lock.yaml for pnpm workspaces)
+package-lock.json
+yarn.lock
+
+# Changeset files (temporary)
+.changeset/*.md
+!.changeset/config.json
+!.changeset/README.md
