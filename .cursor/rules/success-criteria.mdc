@@ -1,0 +1,35 @@
+---
+alwaysApply: true
+---
+# Project Success Criteria: README is Source of Truth
+
+The root [README.md](mdc:README.md) is the final acceptance criterion for this project. All user-facing behavior MUST match the README exactly.
+
+## Enforcement
+
+- Treat README as the product contract for developers adopting Voko.
+- A change is “done” only if README is accurate, complete, and copy‑pasteable.
+- If a PR changes behavior (CLI, config, outputs, namespacing, rich text rules, client/server rules), update README in the same PR.
+
+## Required README Sections to Keep Accurate
+
+- Quick Start (install, core flow: init → scan → extract → inject)
+- Configuration (full field reference and example JSON)
+- Namespacing (route → namespace mapping rules)
+- Rich Text rules (placeholder mapping and example)
+- Client vs Server behavior (Next.js guidelines)
+- CLI Reference (commands, flags, exit outcomes)
+- Working Files & Outputs (manifest, reports, locales)
+- Best Practices & Troubleshooting
+- CI Integration snippet
+
+## PR Checklist (Blockers)
+
+- README parity: all changed behaviors are documented.
+- Examples compile logically and commands run as written.
+- Config examples reflect current schema and defaults.
+
+## Agent Guidance
+
+- When evaluating completion or proposing changes, compare against [README.md](mdc:README.md) first.
+- Prefer aligning code to README; if README is wrong, update README and code together.

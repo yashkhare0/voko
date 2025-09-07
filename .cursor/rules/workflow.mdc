@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+---
+# Workflow: Implementing Tasks
+
+Source of truth tasks: [TASKS.md](mdc:TASKS.md)
+
+When starting work:
+
+1. Pick a checkbox item (e.g., `VKO-CORE-001`).
+2. Create branch `feat/<id>-<slug>`.
+3. Implement with tests. Keep changes scoped to the task ID.
+4. Run `pnpm -r build`, `pnpm lint`, `pnpm test`.
+5. Add a changeset (`pnpm changeset`), selecting affected packages.
+6. Commit using Conventional Commits with scope and ID, e.g. `feat(core): VKO-CORE-001 define IR types`.
+
+PR Guidelines:
+
+- Reference the task ID in title/description.
+- Include short checklist of acceptance criteria.
+
+## Escalation, Opinions, and User Review
+
+- When a decision requires product/UX opinion or there are multiple reasonable approaches, create review TODOs for the user with:
+  - The concrete decision to make (one sentence)
+  - 2–3 options with brief pros/cons
+  - A recommended default (what we’ll implement if unblocked)
+- Mark review TODOs clearly (prefix with "REVIEW:") and proceed with the recommended safe default unless:
+  - The change is breaking (CLI, config schema, outputs, namespacing, rich-text rules)
+  - It requires cross‑package architectural shifts
+  - It alters CI/release behavior
+- If blocked, pause risky edits, surface the TODOs, and continue with adjacent, unblocked tasks.
+- Keep TODOs atomic and traceable to `TASKS.md` IDs; reference the impacted files.

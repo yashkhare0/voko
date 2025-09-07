@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+# Conventions: Commits, Releases, Branching
+
+Commits (Conventional Commits; enforced by commitlint):
+
+- Format: `type(scope)!: summary` (scope examples: core, adapter-react-next, adapter-vue-nuxt, cli)
+- Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+- Breaking: add `!` or `BREAKING CHANGE:` footer
+
+Changesets:
+
+- Add changeset with `pnpm changeset` per logical change; select packages and bump
+- Publish flow is handled via CI; local testing uses `pnpm -r build`
+
+Branches:
+
+- Feature branches: `feat/<area>-<slug>`
+- Fix branches: `fix/<area>-<slug>`

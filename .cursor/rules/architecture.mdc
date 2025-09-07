@@ -1,0 +1,21 @@
+---
+alwaysApply: false
+description: Core-adapter architecture, responsibilities, and boundaries
+---
+# Architecture: Core ↔ Adapters
+
+Core responsibilities (see [PRD.md](mdc:PRD.md)):
+
+- Config load/validate, manifest read/write/reconcile
+- Locale IO, reports, diff printing, patch application
+- CI `check` logic
+
+Adapter responsibilities:
+
+- Detect project, list files, namespace mapping, client/server classification
+- Extract candidates (IR) and propose Patch plan for injection
+
+Stability:
+
+- `FrameworkAdapter` interface is the contract; avoid leaking adapter specifics into core.
+- Keep shadcn coverage declarative in adapter.

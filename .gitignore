@@ -56,3 +56,9 @@ yarn.lock
 .changeset/*.md
 !.changeset/config.json
 !.changeset/README.md
+# Voko working directories and files
+.voko/
+reports/
+
+# Project documentation (keep in repo)
+# /PRD.md

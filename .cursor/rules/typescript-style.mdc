@@ -1,0 +1,12 @@
+---
+globs: *.ts,*.tsx
+---
+# TypeScript Style & Safety
+
+- Enable strict mode (already set in [tsconfig.base.json](mdc:tsconfig.base.json)).
+- Prefer explicit return types for exported functions.
+- Avoid `any`; use union/intersection and generics instead.
+- Use early returns; avoid deep nesting.
+- Keep variable names descriptive; avoid 1-2 character names.
+- Organize code by feature: `src/{config,fs,hash,locale,manifest,report,inject,patch}` in core.
+- Only catch errors when you can handle them meaningfully.

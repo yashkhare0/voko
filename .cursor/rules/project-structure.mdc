@@ -1,0 +1,25 @@
+---
+alwaysApply: true
+---
+# Project Structure & Navigation
+
+Use this as a quick map of the repo. Key files are linked for quick-open.
+
+- Workspace: [pnpm-workspace.yaml](mdc:pnpm-workspace.yaml)
+- Root TS config: [tsconfig.base.json](mdc:tsconfig.base.json)
+- Lint/format: [eslint.config.mjs](mdc:eslint.config.mjs), [.prettierrc.json](mdc:.prettierrc.json)
+- Versioning: [.changeset/config.json](mdc:.changeset/config.json)
+- Tasks backlog: [TASKS.md](mdc:TASKS.md)
+- PRD: [PRD.md](mdc:PRD.md)
+
+Packages (workspace/*):
+
+- Core engine: [packages/core](mdc:packages/core)
+- React/Next adapter: [packages/adapter-react-next](mdc:packages/adapter-react-next)
+- Vue/Nuxt adapter (stub): [packages/adapter-vue-nuxt](mdc:packages/adapter-vue-nuxt)
+- CLI: [packages/cli](mdc:packages/cli)
+
+Build:
+
+- Package build: run `pnpm -r build`
+- Individual: run `pnpm dev` inside a package
