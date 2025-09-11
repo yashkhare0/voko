@@ -101,7 +101,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Tests: Type-only compile tests (dts) and sample object validation.
   - Acceptance: Adapters can import and construct IR seamlessly.
 
-- [ ] VKO-CORE-002: Define Patch plan types and applier
+- [x] VKO-CORE-002: Define Patch plan types and applier
   - Objective: Describe and apply text edits (PRD §3.2).
   - Files:
     - `packages/core/src/patch/types.ts`
@@ -119,14 +119,14 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Tests: Multiple spacing variants map to identical hash input.
   - Acceptance: Stable across runs and adapters.
 
-- [ ] VKO-CORE-004: Hashing helpers (xxhash-wasm)
+- [x] VKO-CORE-004: Hashing helpers (xxhash-wasm)
   - Objective: Fast, stable content hashing (PRD §3.3 `contentHash`).
   - Files: `packages/core/src/hash/index.ts`
   - Steps: Lazy-init xxhash; export `hash64(input: string): string`.
   - Tests: Same input → same hash; diff input → diff hash.
   - Acceptance: Used by manifest reconciliation.
 
-- [ ] VKO-CORE-005: Manifest model (read/write, reconcile)
+- [x] VKO-CORE-005: Manifest model (read/write, reconcile)
   - Objective: Idempotency ledger (PRD §3.3).
   - Files: `packages/core/src/manifest/{types.ts,read.ts,write.ts,reconcile.ts}`
   - Steps:
@@ -136,14 +136,14 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Tests: Two-run idempotency; deletes produce `orphaned`.
   - Acceptance: Downstream commands consume reconciliation output.
 
-- [ ] VKO-CORE-006: Report writer (scan summaries)
+- [x] VKO-CORE-006: Report writer (scan summaries)
   - Objective: Emit `reports/voko-scan-YYYYMMDD-HHmm.json` (PRD §4.3).
   - Files: `packages/core/src/report/write.ts`
   - Steps: Write summary and notes; ensure stable formatting.
   - Tests: File path includes timestamp; contents match schema.
   - Acceptance: `scan` produces readable reports.
 
-- [ ] VKO-CORE-007: Logging and error types
+- [x] VKO-CORE-007: Logging and error types
   - Objective: Centralize INFO/WARN/ERROR with typed errors.
   - Files: `packages/core/src/log/index.ts`, `packages/core/src/errors.ts`
   - Steps: Implement minimal logger with levels; error classes with `code`.
@@ -151,13 +151,13 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: Filesystem & Discovery (CORE)
 
-- [ ] VKO-CORE-101: Glob discovery with fast-glob honoring ignore list
+- [x] VKO-CORE-101: Glob discovery with fast-glob honoring ignore list
   - Objective: Controlled discovery per adapter config.
   - Files: `packages/core/src/fs/glob.ts`
   - Steps: `discover(globs: string[], ignore: string[]): Promise<string[]>` with `dot: true`, `followSymbolicLinks: false`.
   - Tests: Ignore patterns honored; deterministic ordering.
 
-- [ ] VKO-CORE-102: Stable write helpers (write only on change)
+- [x] VKO-CORE-102: Stable write helpers (write only on change)
   - Objective: Avoid churn; write only when content changed.
   - Files: `packages/core/src/fs/write.ts`
   - Steps: `writeFileStable(path, content)` compares existing file string before write.
@@ -179,62 +179,62 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: React/Next Adapter (REACT)
 
-- [ ] VKO-REACT-001: Detect Next.js project
+- [x] VKO-REACT-001: Detect Next.js project
   - Objective: Determine if consumer repo is Next.js.
   - Files: `packages/adapter-react-next/src/detect.ts`
   - Steps: Look for `next.config.*`, `app/` or `pages/` folders, `package.json` deps.
   - Tests: True for fixtures; false otherwise.
 
-- [ ] VKO-REACT-002: File listing based on config globs
+- [x] VKO-REACT-002: File listing based on config globs
   - Objective: Enumerate TS/TSX files per config.
   - Files: `packages/adapter-react-next/src/files.ts`
   - Steps: Use core `discover` with adapter-specific globs and ignore.
   - Tests: Lists only targeted files.
 
-- [ ] VKO-REACT-003: Namespace mapping (App/Pages Router)
+- [x] VKO-REACT-003: Namespace mapping (App/Pages Router)
   - Objective: Stable namespace derivation (PRD §3.4).
   - Files: `packages/adapter-react-next/src/namespace.ts`
   - Steps: Implement mapping examples (`app/(marketing)/about/page.tsx` → `marketing.about`, pages router `pages/about.tsx` → `about`, dynamic `[slug]` → `.slug`).
   - Tests: Mapping table snapshot.
 
-- [ ] VKO-REACT-004: Component kind (client/server) detection
+- [x] VKO-REACT-004: Component kind (client/server) detection
   - Objective: Check for top-level "use client".
   - Files: `packages/adapter-react-next/src/componentKind.ts`
   - Tests: Files with and without directive.
 
-- [ ] VKO-REACT-005: Bindings for next-intl (client/server)
+- [x] VKO-REACT-005: Bindings for next-intl (client/server)
   - Objective: Provide import strings and usage templates.
   - Files: `packages/adapter-react-next/src/bindings.ts`
   - Steps: Client: `useTranslations('<ns>')`; Server: `getTranslator(locale, '<ns>')` suggestion.
 
-- [ ] VKO-REACT-006: Extraction – plain block text nodes
+- [x] VKO-REACT-006: Extraction – plain block text nodes
   - Objective: Find translatable blocks per PRD §6.2.
   - Files: `packages/adapter-react-next/src/extract/blocks.ts`
   - Steps: Parse TSX (ts-morph), traverse JSX; skip if already `t()`.
   - Tests: Extracts h1..h6, p, li, etc.
 
-- [ ] VKO-REACT-007: Extraction – attributes
+- [x] VKO-REACT-007: Extraction – attributes
   - Objective: Extract `alt`, `title`, `aria-label`, `placeholder`, `<option value>`.
   - Files: `packages/adapter-react-next/src/extract/attrs.ts`
   - Tests: Attributes captured with loc info.
 
-- [ ] VKO-REACT-008: Extraction – rich text with inline placeholders
+- [x] VKO-REACT-008: Extraction – rich text with inline placeholders
   - Objective: Collapse inline tags into placeholders and mark `kind = "rich"`.
   - Files: `packages/adapter-react-next/src/extract/rich.ts`
   - Tests: Strong/em/code/a/span produce placeholders in order.
 
-- [ ] VKO-REACT-009: shadcn/ui coverage map
+- [x] VKO-REACT-009: shadcn/ui coverage map
   - Objective: Treat component children as text for listed components.
   - Files: `packages/adapter-react-next/src/shadcn-map.ts`
   - Tests: Map-driven coverage; easy to extend.
 
-- [ ] VKO-REACT-010: planRewrite rules (client components only)
+- [x] VKO-REACT-010: planRewrite rules (client components only)
   - Objective: Build `Patch[]` to inject imports and `t()` usages.
   - Files: `packages/adapter-react-next/src/rewrite/plan.ts`
   - Steps: Insert import once; declare `const t = useTranslations('<ns>')` once; replace blocks/rich accordingly.
   - Tests: Snapshot diffs; server files produce suggestions only.
 
-- [ ] VKO-REACT-011: Patcher helpers for imports and `t()` insertions
+- [x] VKO-REACT-011: Patcher helpers for imports and `t()` insertions
   - Objective: Utilities to avoid duplicate imports/decls.
   - Files: `packages/adapter-react-next/src/rewrite/patchers.ts`
   - Tests: Idempotent patches.

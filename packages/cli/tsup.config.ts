@@ -8,6 +8,9 @@ export default defineConfig({
   dts: false,
   format: ['esm', 'cjs'],
   banner: {
-    js: '#!/usr/bin/env node',
+    // Ensure no shebang in CJS output to allow `node dist/cli.cjs` execution on Windows
+    // ESM output doesn't include it either.
+    js: '',
   },
+  external: ['@voko/core', '@voko/adapter-react-next', 'commander'],
 });

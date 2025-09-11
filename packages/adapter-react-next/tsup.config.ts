@@ -7,4 +7,5 @@ export default defineConfig({
   clean: true,
   dts: true,
   format: ['esm', 'cjs'],
+  external: ['@voko/core'],
 });

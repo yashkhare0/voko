@@ -1,0 +1,14 @@
+{
+  "frameworks": ["react-next"],
+  "library": { "react-next": "next-intl" },
+  "defaultLocale": "en",
+  "locales": ["en"],
+  "globs": {
+    "react-next": ["app/**/*.{ts,tsx}", "pages/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"]
+  },
+  "ignore": ["**/__tests__/**", "**/*.stories.*", "node_modules/**"],
+  "namespaceStrategy": { "react-next": "route" },
+  "attributes": ["alt", "title", "aria-label", "placeholder"],
+  "rewrite": { "enabled": false, "rich": true, "keepFormatting": true },
+  "quarantineDays": 14
+}

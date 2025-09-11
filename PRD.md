@@ -72,7 +72,7 @@ repo/
 
 - Node 18+
 - TypeScript everywhere
-- **React adapter AST:** `ts-morph` (single parse/print stack to avoid diff churn)
+- **React adapter AST:** TypeScript compiler API for MVP (ts-morph optional for future print/diff stability)
 - **Vue adapter AST (future):** `@vue/compiler-sfc` + Babel for `<script setup>`
 - File discovery: `fast-glob`
 - CLI: `commander`
