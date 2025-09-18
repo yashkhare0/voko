@@ -16,20 +16,18 @@ Supported today: React/Next.js (with next-intl). Vue/Nuxt is planned.
 
 Install in your application repo (not this repository):
 
-```bash
+````bash
 npm i -D @voko/cli
 npx voko init
 npx voko scan
 npx voko extract
 npx voko inject --dry-run   # inspect diffs
-npx voko inject             # apply changes
-```
-
+npx voko inject --no-dry-run   # apply changes
 Recommended PR check:
 
 ```bash
 npx voko scan && npx voko extract && npx voko check
-```
+````
 
 ---
 
@@ -127,7 +125,7 @@ const t = await getTranslator(locale, '<namespace>');
 
 - `voko init`
   - Scaffolds `voko.config.json`, `.voko/manifest.json`, `.voko/trash/`, `reports/`.
-  - Flags: `--force` overwrite existing config.
+  - Flags: `--force` overwrite existing config; `--no-install` skip i18n lib install (default installs, e.g., `next-intl`).
 
 - `voko scan`
   - Loads adapters, parses files, emits candidates, reconciles with manifest.
@@ -136,8 +134,9 @@ const t = await getTranslator(locale, '<namespace>');
 - `voko extract`
   - Writes/merges locale JSON files with stable ordering. Non-default locales receive `""` for new keys.
 
-- `voko inject [--dry-run] [--file <glob>]`
-  - Applies safe codemods to client files: imports `useTranslations`, declares `t`, replaces nodes.
+- `voko inject [--dry-run]`
+  - Adds `import { useTranslations } from 'next-intl'` and declares `const t = useTranslations('<ns>')` in client files.
+  - Replacement of nodes is limited in this release; review diffs with `--dry-run`.
   - Default is `--dry-run` (prints unified diffs). Use `--no-dry-run` to apply.
 
 - `voko sync`
@@ -147,7 +146,7 @@ const t = await getTranslator(locale, '<namespace>');
   - Deletes `.voko/trash/*.json` older than the threshold.
 
 - `voko check`
-  - CI gate: fails if raw strings were introduced or base locale keys are missing after extract.
+  - CI gate: fails if raw strings were introduced (created candidates present).
 
 Exit codes are documented in the PRD. Typical outcomes: `0` success; non-zero for parse, schema, write, or CI violations.
 
@@ -219,6 +218,35 @@ export default function Page() {
 }
 ```
 
+More patterns:
+
+- Attribute extraction and usage:
+
+```tsx
+<img alt="Profile picture" />
+// becomes
+<img alt={t('profile.image.alt')} />
+```
+
+- Rich text with placeholders:
+
+```tsx
+<p>
+  We <strong>love</strong> clean diffs.
+</p>;
+// becomes (client)
+{
+  t.rich('about.body.0', { strong: (c) => <strong>{c}</strong> });
+}
+```
+
+- Server suggestion:
+
+```ts
+import { getTranslator } from 'next-intl/server';
+const t = await getTranslator(locale, 'marketing.about');
+```
+
 ---
 
 ## CI Integration
@@ -247,6 +275,13 @@ jobs:
 - Namespaces look odd: verify your route structure and `namespaceStrategy`.
 - Server files not rewritten: expected; use the server suggestion pattern.
 - Mixed frameworks: set `frameworks` and `globs` per adapter and re-run.
+
+- Adapter not detected (React/Next): ensure you run from the app repo root, that `frameworks` includes `"react-next"`, and that your project has `app/` or `pages/` (or `next.config.*`).
+- No diffs from `inject --dry-run`: injection only applies to client components; add `"use client"` at the top of the file. Also confirm `scan` finds candidates for that namespace.
+- Config validation failed: run `voko init` to scaffold a valid `voko.config.json`. On schema errors, the error message includes the path; compare your file with the example in this README.
+- Globs seem ignored: use forward slashes in globs (even on Windows) and ensure patterns are under your repo root. Example: `"app/**/*.{ts,tsx}"`.
+- Scan report missing: `scan` writes to `reports/`; check write permissions and that the directory exists (created by `init`).
+- CI `check` fails: it means new raw strings were introduced. Run `voko scan && voko extract` locally, commit updated locale files, and re-run.
 
 ---
 

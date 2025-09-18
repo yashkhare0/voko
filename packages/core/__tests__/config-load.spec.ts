@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config/load';
 import { ConfigError } from '../src/config/errors';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { fail } from 'node:assert';
 import { join } from 'node:path';
 
 function withTempDir(run: (dir: string) => void) {
@@ -18,21 +19,21 @@ function withTempDir(run: (dir: string) => void) {
 describe('loadConfig', () => {
   it('throws missing file error with guidance', () => {
     withTempDir((dir) => {
-      expect(() => loadConfig({ cwd: dir })).toThrowError(ConfigError);
       try {
         loadConfig({ cwd: dir });
+        fail('expected error');
       } catch (e) {
         const err = e as ConfigError;
         expect(err.code).toBe('CONF_MISSING_FILE');
       }
     });
   });
-
   it('surfaces JSON errors with position', () => {
     withTempDir((dir) => {
       writeFileSync(join(dir, 'voko.config.json'), '{ invalid json', 'utf8');
       try {
         loadConfig({ cwd: dir });
+        expect.fail('Should have thrown ConfigError');
       } catch (e) {
         const err = e as ConfigError;
         expect(err.code).toBe('CONF_INVALID_JSON');
@@ -40,16 +41,17 @@ describe('loadConfig', () => {
       }
     });
   });
-
   it('validates schema and rejects unknown keys', () => {
     withTempDir((dir) => {
       writeFileSync(join(dir, 'voko.config.json'), JSON.stringify({ foo: 1 }), 'utf8');
       try {
         loadConfig({ cwd: dir });
+        expect.fail('Should have thrown ConfigError');
       } catch (e) {
         const err = e as ConfigError;
         expect(err.code).toBe('CONF_INVALID_SCHEMA');
-        expect(err.issues && err.issues.length).toBeGreaterThan(0);
+        expect(err.issues).toBeDefined();
+        expect(err.issues!.length).toBeGreaterThan(0);
       }
     });
   });

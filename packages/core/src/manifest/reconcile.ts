@@ -10,7 +10,7 @@ interface ReconcileOptions {
 function indexByKey(entries: ManifestEntry[]): Map<string, ManifestEntry> {
   const m = new Map<string, ManifestEntry>();
   for (const e of entries) {
-    if (e.key) m.set(`${e.namespace}::${e.key}`, e);
+    if (e.key) m.set(`${e.namespace ?? ''}::${e.key}`, e);
   }
   return m;
 }
@@ -47,46 +47,53 @@ export function reconcile(
 
     // 1) Match by exact namespace+key if provided via hints and present in manifest
     if (candidateKey) {
-      const maybeKey = byKey.get(`${c.namespace}::${candidateKey}`);
+      const maybeKey = byKey.get(`${c.namespace ?? ''}::${candidateKey}`);
       if (maybeKey) {
-        const isChanged = maybeKey.contentHash !== candidateHash;
+        if (maybeKey) {
+          const isChanged = maybeKey.contentHash !== candidateHash;
+          const next: ManifestEntry = {
+            ...maybeKey,
+            fingerprint: {
+              descriptor: `${c.namespace ?? ''}::${c.tag ?? ''}@${c.loc.file}#${c.loc.start}`,
+            },
+            tag: c.tag,
+            start: c.loc.start,
+            end: c.loc.end,
+            lastSeen: now,
+            contentHash: candidateHash,
+          };
+          seen.add(maybeKey);
+          if (isChanged) {
+            updated.push({ previous: maybeKey, entry: next });
+          } else {
+            unchanged.push(next);
+          }
+          continue;
+        }
+      }
+
+      const hashMatches = (byHash.get(candidateHash) ?? []).filter((e) => !seen.has(e));
+      if (hashMatches.length > 0) {
+        // Prefer matches with same namespace/tag for better accuracy
+        const prev =
+          hashMatches.find((e) => e.namespace === c.namespace && e.tag === c.tag) ??
+          hashMatches.find((e) => e.namespace === c.namespace) ??
+          hashMatches[0];
         const next: ManifestEntry = {
-          ...maybeKey,
+          ...prev,
           file: c.loc.file,
+          namespace: c.namespace,
           tag: c.tag,
           start: c.loc.start,
           end: c.loc.end,
           lastSeen: now,
+          status: prev.status === 'orphaned' ? 'extracted' : prev.status,
           contentHash: candidateHash,
         };
-        seen.add(maybeKey);
-        if (isChanged) {
-          updated.push({ previous: maybeKey, entry: next });
-        } else {
-          unchanged.push(next);
-        }
+        seen.add(prev);
+        unchanged.push(next);
         continue;
       }
-    }
-
-    // 2) Match by contentHash
-    const hashMatches = (byHash.get(candidateHash) ?? []).filter((e) => !seen.has(e));
-    if (hashMatches.length > 0) {
-      const prev = hashMatches[0];
-      const next: ManifestEntry = {
-        ...prev,
-        file: c.loc.file,
-        namespace: c.namespace,
-        tag: c.tag,
-        start: c.loc.start,
-        end: c.loc.end,
-        lastSeen: now,
-        status: prev.status === 'orphaned' ? 'extracted' : prev.status,
-        contentHash: candidateHash,
-      };
-      seen.add(prev);
-      unchanged.push(next);
-      continue;
     }
 
     // 3) Fallback: create new entry

@@ -34,4 +34,15 @@ describe('applyPatches', () => {
     expect(res.conflicts.length).toBe(1);
     expect(res.files.length).toBe(0);
   });
+
+  it('treats touching ranges as conflicts (safety)', () => {
+    const text = 'abcdef';
+    const patches: Patch[] = [
+      { file: 'z.ts', edits: [{ start: 1, end: 3, replacement: 'XX' }] },
+      { file: 'z.ts', edits: [{ start: 3, end: 4, replacement: 'Y' }] },
+    ];
+    const res = applyPatches(patches, { contents: { 'z.ts': text } });
+    expect(res.conflicts.length).toBe(1);
+    expect(res.files.length).toBe(0);
+  });
 });

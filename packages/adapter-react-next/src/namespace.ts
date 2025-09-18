@@ -31,7 +31,6 @@ function isDynamic(seg: string): boolean {
 function normalizeSegment(seg: string): string | null {
   // Route groups like (marketing) -> marketing
   if (/^\(.*\)$/.test(seg)) return seg.slice(1, -1);
-  if (seg === 'api') return null; // ignore API routes
   if (isDynamic(seg)) {
     // [slug], [...slug], [[...slug]] -> slug
     return seg.replace(/^\[+|\]+$/g, '').replace(/^\.\.\./, '');
@@ -55,9 +54,14 @@ export function deriveNamespace(filePath: string): string {
     if (RESERVED_APP_FILENAMES.has(last)) {
       routeSegs = after.slice(0, -1);
     }
+    // Ignore API prefix only when it's the first segment under /app
+    if (routeSegs[0] === 'api') {
+      routeSegs = routeSegs.slice(1);
+    }
     const normalized = routeSegs
       .map((seg) => normalizeSegment(seg))
       .filter((seg): seg is string => !!seg && seg.length > 0);
+    if (normalized.length === 0) return 'app';
     return normalized.join('.');
   }
 

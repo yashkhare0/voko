@@ -43,7 +43,9 @@ export function planRewriteForFile(filePath: string, candidates: CandidateIR[]):
   // Add t declaration if missing
   if (!hasTDeclaration(content) && ns) {
     const pos = computeTDeclarationInsertPos(sf);
-    edits.push({ start: pos, end: pos, replacement: buildTDeclaration(ns) });
+    if (pos >= 0) {
+      edits.push({ start: pos, end: pos, replacement: buildTDeclaration(ns) });
+    }
   }
 
   if (imports.length === 0 && edits.length === 0) return null;

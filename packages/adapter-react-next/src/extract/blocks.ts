@@ -31,14 +31,15 @@ export function extractBlocks(
     if (isJsxElement(node)) {
       const tag = getTagName(node);
       if (BLOCK_TAGS.has(tag) || isShadcnTextComponent(tag)) {
-        const text = collectBlockText(node.children);
+        const rawText = collectBlockText(node.children);
+        const text = rawText ? normalizeText(rawText) : '';
         if (text) {
           results.push({
             id: '',
             namespace,
             kind: 'block',
             tag,
-            text: normalizeText(text),
+            text,
             loc: { file: filePath, start: node.getStart(), end: node.getEnd() },
             framework: frameworkId,
           });

@@ -21,7 +21,7 @@ describe('ConfigSchema', () => {
   it('rejects unknown keys', () => {
     // Cast through unknown to avoid any in test while still simulating bad input
     const bad: unknown = { foo: 1 };
-    // @ts-expect-error - testing unknown key rejection
+
     expect(() => ConfigSchema.parse(bad)).toThrowError();
   });
 });

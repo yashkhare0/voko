@@ -13,6 +13,14 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    include: ['packages/**/__tests__/**/*.spec.{ts,tsx,js,jsx}'],
+    exclude: [
+      '**/node_modules/**',
+      '**/.pnpm/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '**/.tmp-tests-fs/**',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],

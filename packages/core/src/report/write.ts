@@ -26,6 +26,9 @@ function pad2(n: number): string {
 
 function formatTimestamp(iso?: string): string {
   const d = iso ? new Date(iso) : new Date();
+  if (iso && Number.isNaN(d.getTime())) {
+    throw new Error(`Invalid ISO timestamp: ${iso}`);
+  }
   const yyyy = d.getUTCFullYear();
   const mm = pad2(d.getUTCMonth() + 1);
   const dd = pad2(d.getUTCDate());
@@ -38,10 +41,9 @@ export function writeScanReport(report: ScanReport, opts: WriteScanReportOptions
   const cwd = opts.cwd ?? process.cwd();
   const dir = opts.dir ?? 'reports';
   const stamp = formatTimestamp(opts.now);
-  const file = resolve(cwd, dir, `voko-scan-${stamp}.json`);
-
-  mkdirSync(resolve(cwd, dir), { recursive: true });
   const json = JSON.stringify(report, null, 2) + '\n';
-  writeFileSync(file, json, 'utf8');
+  const file = resolve(cwd, dir, `voko-scan-${stamp}.json`);
+  mkdirSync(resolve(cwd, dir), { recursive: true });
+  writeFileSync(file, json, { encoding: 'utf8', flag: 'wx' });
   return file;
 }

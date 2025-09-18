@@ -4,8 +4,21 @@ import type { CandidateIR } from '@voko/core';
 const ATTRS = new Set(['alt', 'title', 'aria-label', 'placeholder']);
 
 function getAttrText(attr: ts.JsxAttribute): string | null {
-  if (!attr.initializer) return null;
-  if (ts.isStringLiteral(attr.initializer)) return attr.initializer.text.trim();
+  const init = attr.initializer;
+  if (!init) return null;
+  // <div title="foo" />
+  if (ts.isStringLiteral(init) || ts.isNoSubstitutionTemplateLiteral(init)) {
+    const t = init.text.trim();
+    return t.length ? t : null;
+  }
+  // <div title={'foo'} /> or <div title={`foo`}/>
+  if (ts.isJsxExpression(init) && init.expression) {
+    const expr = init.expression;
+    if (ts.isStringLiteral(expr) || ts.isNoSubstitutionTemplateLiteral(expr)) {
+      const t = expr.text.trim();
+      return t.length ? t : null;
+    }
+  }
   return null;
 }
 

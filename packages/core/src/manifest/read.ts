@@ -1,6 +1,13 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Manifest } from './types';
+
+const DEFAULT_MANIFEST: Manifest = { version: 1, entries: [] };
+
+function stripBom(input: string): string {
+  if (input.length === 0) return input;
+  return input.charCodeAt(0) === 0xfeff ? input.slice(1) : input;
+}
 
 export interface ReadManifestOptions {
   /** Root of the consumer project (contains .voko/) */
@@ -13,19 +20,25 @@ export function readManifest(opts: ReadManifestOptions = {}): Manifest {
   const cwd = opts.cwd ?? process.cwd();
   const rel = opts.path ?? '.voko/manifest.json';
   const filePath = resolve(cwd, rel);
-  if (!existsSync(filePath)) {
-    return { version: 1, entries: [] };
-  }
-  const raw = readFileSync(filePath, 'utf8');
+  let raw: string;
   try {
-    const parsed = JSON.parse(raw) as Manifest;
-    // Basic shape guard; fallback to empty if malformed
-    if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.entries)) {
-      return { version: 1, entries: [] };
-    }
-    return { version: parsed.version ?? 1, entries: parsed.entries };
+    raw = readFileSync(filePath, 'utf8');
   } catch {
-    // Malformed JSON → initialize new manifest
-    return { version: 1, entries: [] };
+    return DEFAULT_MANIFEST;
+  }
+  try {
+    const parsedUnknown = JSON.parse(stripBom(raw));
+    if (!parsedUnknown || typeof parsedUnknown !== 'object') {
+      return DEFAULT_MANIFEST;
+    }
+    const parsed = parsedUnknown as Partial<Manifest> & Record<string, unknown>;
+    const version =
+      typeof parsed.version === 'number' && Number.isFinite(parsed.version)
+        ? parsed.version
+        : DEFAULT_MANIFEST.version;
+    const entries = Array.isArray(parsed.entries) ? parsed.entries : [];
+    return { version, entries } as Manifest;
+  } catch {
+    return DEFAULT_MANIFEST;
   }
 }

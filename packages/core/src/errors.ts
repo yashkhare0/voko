@@ -8,12 +8,11 @@ export type CoreErrorCode =
 
 export class CoreError extends Error {
   public readonly code: CoreErrorCode;
-  public readonly cause?: unknown;
+  declare readonly cause?: unknown;
 
   constructor(code: CoreErrorCode, message: string, options?: { cause?: unknown }) {
-    super(message);
+    super(message, options?.cause !== undefined ? { cause: options.cause } : undefined);
     this.name = 'CoreError';
     this.code = code;
-    this.cause = options?.cause;
   }
 }

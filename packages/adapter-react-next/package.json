@@ -27,7 +27,9 @@
     "next": ">=13.4.0"
   },
   "dependencies": {
-    "@voko/core": "workspace:*",
+    "@voko/core": "workspace:*"
+  },
+  "devDependencies": {
     "typescript": "^5.9.2"
   }
 }

@@ -33,10 +33,9 @@ export interface Logger {
 }
 
 export function createLogger(opts: LoggerOptions = {}): Logger {
-  const level = opts.level ?? 'info';
-  const json = opts.json ?? false;
+  let currentLevel: LogLevel = opts.level ?? 'info';
+  let currentJson: boolean = opts.json ?? false;
   const write = opts.sink ?? ((line: string) => process.stdout.write(line + '\n'));
-  const threshold = levelToNum(level);
 
   function emit(
     kind: 'error' | 'warn' | 'info' | 'debug',
@@ -44,9 +43,10 @@ export function createLogger(opts: LoggerOptions = {}): Logger {
     data?: Record<string, unknown>,
   ): void {
     const numeric = levelToNum(kind);
+    const threshold = levelToNum(currentLevel);
     if (numeric < threshold) return;
-    if (json) {
-      const payload = { level: kind, msg, ...(data ?? {}) };
+    if (currentJson) {
+      const payload = data ? { level: kind, msg, ...data } : { level: kind, msg };
       write(JSON.stringify(payload));
     } else {
       const prefix =
@@ -63,8 +63,18 @@ export function createLogger(opts: LoggerOptions = {}): Logger {
   }
 
   return {
-    level,
-    json,
+    get level() {
+      return currentLevel;
+    },
+    set level(nextLevel: LogLevel) {
+      currentLevel = nextLevel;
+    },
+    get json() {
+      return currentJson;
+    },
+    set json(nextJson: boolean) {
+      currentJson = nextJson;
+    },
     error: (m, d) => emit('error', m, d),
     warn: (m, d) => emit('warn', m, d),
     info: (m, d) => emit('info', m, d),

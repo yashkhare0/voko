@@ -21,8 +21,7 @@ export const SHADCN_TEXT_COMPONENTS: ReadonlySet<string> = new Set([
   'AlertDescription',
   'CardTitle',
   'CardDescription',
-  'PopoverTitle',
-  'PopoverDescription',
+  'PopoverContent',
   'Tooltip',
   'TooltipTrigger',
 ]);

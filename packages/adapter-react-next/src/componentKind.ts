@@ -5,7 +5,7 @@ function getTopStringDirective(sourceFile: ts.SourceFile): string | null {
   const first = sourceFile.statements[0];
   if (!first || !ts.isExpressionStatement(first)) return null;
   const expr = first.expression;
-  if (ts.isStringLiteral(expr) || ts.isNoSubstitutionTemplateLiteral(expr)) {
+  if (ts.isStringLiteral(expr)) {
     return expr.text;
   }
   return null;

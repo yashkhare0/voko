@@ -32,6 +32,7 @@ export interface ConflictRange {
 export interface ApplyConflict {
   file: string;
   ranges: ConflictRange[];
+  error?: string;
 }
 
 export interface ApplyResult {

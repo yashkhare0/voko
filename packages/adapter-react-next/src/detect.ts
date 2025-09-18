@@ -17,7 +17,7 @@ async function pathExists(targetPath: string): Promise<boolean> {
   }
 }
 
-export async function detectReactNextProject(projectRoot: string): Promise<boolean> {
+export async function detectReactNextProject(projectRoot?: string): Promise<boolean> {
   const root = projectRoot ?? process.cwd();
 
   // 1) next.config.* present

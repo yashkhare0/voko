@@ -22,9 +22,14 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Steps:
     1. Ensure ESLint configs include `typescript-eslint` non-type-checked presets.
     2. Ensure ignores include `dist`, `coverage`, `**/*.d.ts`, `**/tsup.config.ts`, `**/vitest.config.ts`.
-  - Acceptance:
-    - `pnpm lint` and `pnpm build` succeed.
-    - Formatting/lint hooks apply on commit.
+  - Acceptance:Implement INJECT-001/003 (patch planning glue + conflict-safe apply improvements).
+    Implement INJECT-001/003 (patch planning glue + conflict-safe apply improvements).
+    Implement INJECT-001/003 (patch planning glue + conflict-safe apply improvements).
+    Implement INJECT-001/003 (patch planning glue + conflict-safe apply improvements).
+    Implement INJECT-001/003 (patch planning glue + conflict-safe apply improvements).
+
+        - `pnpm lint` and `pnpm build` succeed.
+        - Formatting/lint hooks apply on commit.
 
 - [x] VKO-MONO-002: Husky hooks and lint-staged configuration
   - Objective: Enforce formatting, linting and commit convention.
@@ -165,13 +170,13 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: Locale IO (LOCALE)
 
-- [ ] VKO-LOCALE-001: Locale JSON read/write with stable key order
+- [x] VKO-LOCALE-001: Locale JSON read/write with stable key order
   - Objective: Maintain sorted keys and trailing newline (PRD §9.1).
   - Files: `packages/core/src/locale/{read.ts,write.ts}`
   - Steps: Read JSON; write pretty, lexicographically sorted keys; ensure newline.
   - Tests: Sorting confirmed; newline present.
 
-- [ ] VKO-LOCALE-002: Extract result → locale merge logic
+- [x] VKO-LOCALE-002: Extract result → locale merge logic
   - Objective: Merge `created/updated` into base and other locales (PRD §4.4).
   - Files: `packages/core/src/locale/merge.ts`
   - Steps: Create base locale files if missing; update keys; other locales get empty strings for new keys.
@@ -239,12 +244,12 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Files: `packages/adapter-react-next/src/rewrite/patchers.ts`
   - Tests: Idempotent patches.
 
-- [ ] VKO-REACT-012: Adapter entry implementing FrameworkAdapter
+- [x] VKO-REACT-012: Adapter entry implementing FrameworkAdapter
   - Objective: Wire all pieces to match core interface (PRD §5).
   - Files: `packages/adapter-react-next/src/index.ts`
   - Tests: Smoke test calling each method on fixtures.
 
-- [ ] VKO-REACT-013: Fixtures (app router, pages router) and unit tests
+- [x] VKO-REACT-013: Fixtures (app router, pages router) and unit tests
   - Objective: High-confidence coverage for extraction and rewrite.
   - Files: `packages/adapter-react-next/__tests__/*`, `packages/adapter-react-next/fixtures/*`
   - Tests: Rich/attrs/blocks; client/server; shadcn components.
@@ -271,83 +276,83 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: CLI (CLI)
 
-- [ ] VKO-CLI-001: Commander setup and shared options
+- [x] VKO-CLI-001: Commander setup and shared options
   - Objective: Provide CLI shell with global flags.
   - Files:
     - `packages/cli/src/commands/_shared.ts` (logger, config path override)
     - `packages/cli/src/index.ts` (command registration)
   - Flags: `--config <path>`, `--json`, `--verbose`.
 
-- [ ] VKO-CLI-002: `init` command (write config, dirs)
+- [x] VKO-CLI-002: `init` command (write config, dirs)
   - Objective: Scaffold `voko.config.json`, `.voko/`, `reports/` (PRD §4.1).
   - Files: `packages/cli/src/commands/init.ts`
   - Steps: Respect `--force`; write sample config; create dirs.
   - Exit codes: `0`, `1`, `2` per PRD.
 
-- [ ] VKO-CLI-003: `scan` command (run adapters, emit report)
+- [x] VKO-CLI-003: `scan` command (run adapters, emit report)
   - Objective: Produce IR and reconcile with manifest (PRD §4.2-§4.3).
   - Files: `packages/cli/src/commands/scan.ts`
   - Steps: Load config; for each adapter: detect → files → extract; core reconcile → report write.
   - Exit codes: `0`, `3`, `4`.
 
-- [ ] VKO-CLI-004: `extract` command (write/merge locales)
+- [x] VKO-CLI-004: `extract` command (write/merge locales)
   - Objective: Write base locale files and merge updates (PRD §4.4).
   - Files: `packages/cli/src/commands/extract.ts`
   - Exit codes: `0`, `5`.
 
-- [ ] VKO-CLI-005: `inject` command (apply codemods; dry-run by default)
+- [x] VKO-CLI-005: `inject` command (apply codemods; dry-run by default)
   - Objective: Apply adapter patch plan to client files (PRD §4.5).
   - Files: `packages/cli/src/commands/inject.ts`
   - Flags: `--dry-run` (default true), `--no-dry-run`, `--file <glob>`.
   - Exit codes: `0`, `6`, `7`.
 
-- [ ] VKO-CLI-006: `sync` command (quarantine or deprecate)
+- [x] VKO-CLI-006: `sync` command (quarantine or deprecate)
   - Objective: Reconcile manifest ↔ locales; move/deprecate orphans (PRD §4.5 / §4.7 intent).
   - Files: `packages/cli/src/commands/sync.ts`
   - Exit codes: `0`.
 
-- [ ] VKO-CLI-007: `gc` command (age-based cleanup)
+- [x] VKO-CLI-007: `gc` command (age-based cleanup)
   - Objective: Delete trash older than N days (PRD §4.6).
   - Files: `packages/cli/src/commands/gc.ts`
   - Flags: `--age 14d|21d|...`; Exit: `0`, `8`.
 
-- [ ] VKO-CLI-008: `check` command (CI gate)
+- [x] VKO-CLI-008: `check` command (CI gate)
   - Objective: Fail when violations exist (PRD §4.7).
   - Files: `packages/cli/src/commands/check.ts`
   - Exit codes: `0`, `9`.
 
 ## Epic: Injection Engine (INJECT)
 
-- [ ] VKO-INJECT-001: Build Patch[] from adapter plan
+- [x] VKO-INJECT-001: Build Patch[] from adapter plan
   - Objective: Convert adapter edit intents to `Patch[]` per file.
   - Files: `packages/core/src/inject/plan.ts`
   - Steps: Group edits by file; include imports; ensure deterministic order.
 
-- [ ] VKO-INJECT-002: Unified diff printer (dry-run)
+- [x] VKO-INJECT-002: Unified diff printer (dry-run)
   - Objective: Human-friendly diff for `--dry-run`.
   - Files: `packages/core/src/inject/diff.ts`
   - Steps: Implement minimal unified diff generator; colorize via CLI.
 
-- [ ] VKO-INJECT-003: Safe back-to-front apply with conflict detection
+- [x] VKO-INJECT-003: Safe back-to-front apply with conflict detection
   - Objective: Apply patches safely; surface conflicts with offsets.
   - Files: `packages/core/src/inject/apply.ts`
   - Steps: Detect overlapping ranges; rollback on error; return summary.
 
 ## Epic: Sync & Quarantine (SYNC)
 
-- [ ] VKO-SYNC-001: Compute created/updated/orphaned on rerun
+- [x] VKO-SYNC-001: Compute created/updated/orphaned on rerun
   - Objective: Refresh manifest statuses after scan.
   - Files: `packages/core/src/sync/compute.ts`
   - Steps: Use reconcile output to set statuses; update timestamps.
 
-- [ ] VKO-SYNC-002: Move orphaned keys to `.voko/trash/*.json` or mark deprecated
+- [x] VKO-SYNC-002: Move orphaned keys to `.voko/trash/*.json` or mark deprecated
   - Objective: Keep repo clean per PRD §4.5/§4.6 intent.
   - Files: `packages/core/src/sync/quarantine.ts`
   - Steps: Either move to trash files or mark `"__deprecated": true` based on config.
 
 ## Epic: CI Check (CHECK)
 
-- [ ] VKO-CHECK-001: Fail on created candidates present after extract
+- [x] VKO-CHECK-001: Fail on created candidates present after extract
   - Objective: CI enforcement per PRD §4.7.
   - Files: `packages/core/src/check/index.ts`
   - Steps: Load last scan state; compute violations; non-zero exit on any.
@@ -358,7 +363,7 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
   - Files: `packages/core/__tests__/*`
   - Cases: Namespace mapping; normalize invariants; hash stability.
 
-- [ ] VKO-TEST-002: Manifest reconcile tests (created/updated/orphaned)
+- [x] VKO-TEST-002: Manifest reconcile tests (created/updated/orphaned)
   - Files: `packages/core/__tests__/manifest.spec.ts`
   - Cases: Created/updated/unchanged/orphaned matrix.
 
@@ -376,12 +381,12 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: CI & Release (CI / REL)
 
-- [ ] VKO-CI-001: GitHub Actions `ci.yml` (build/lint/type/test)
+- [x] VKO-CI-001: GitHub Actions `ci.yml` (build/lint/type/test)
   - Objective: CI per PRD §12.3.
   - Files: `.github/workflows/ci.yml`
   - Steps: Node 18; cache pnpm; run build, lint, test; artifact coverage.
 
-- [ ] VKO-REL-001: Changesets `release.yml` for publish
+- [x] VKO-REL-001: Changesets `release.yml` for publish
   - Objective: Automated releases on main.
   - Files: `.github/workflows/release.yml`
   - Steps: Use Changesets action; `pnpm -r publish --access public` with `NPM_TOKEN`.
@@ -392,13 +397,13 @@ This plan is derived from `PRD.md`. Use checkboxes to track progress. Each task 
 
 ## Epic: Documentation (DOCS)
 
-- [ ] VKO-DOCS-001: Root README with quickstart and architecture
+- [x] VKO-DOCS-001: Root README with quickstart and architecture
   - Content: What Voko does, packages, quickstart, CLI table, architecture diagram.
 
-- [ ] VKO-DOCS-002: Package READMEs (`core`, `adapter-react-next`, `cli`)
+- [x] VKO-DOCS-002: Package READMEs (`core`, `adapter-react-next`, `cli`)
   - Content: Purpose, public API, usage examples, config notes.
 
-- [ ] VKO-DOCS-003: Adapter authoring guide
+- [x] VKO-DOCS-003: Adapter authoring guide
   - Content: `FrameworkAdapter` contract and example implementation.
 
 - [ ] VKO-DOCS-004: Consumer docs (config reference, CI snippet)

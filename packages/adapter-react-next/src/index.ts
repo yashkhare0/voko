@@ -1,6 +1,6 @@
 import type { CandidateIR, FrameworkAdapter, Config } from '@voko/core';
 import ts from 'typescript';
-import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { detectReactNextProject } from './detect';
 import { listFiles } from './files';
 import { deriveNamespace } from './namespace';
@@ -10,6 +10,7 @@ import { extractBlocks } from './extract/blocks';
 import { extractAttrs } from './extract/attrs';
 import { extractRich } from './extract/rich';
 import { planRewrite as buildRewritePlan } from './rewrite/plan';
+import { extname } from 'node:path';
 
 export const reactNextAdapter: FrameworkAdapter = {
   id: 'react-next',
@@ -34,17 +35,21 @@ export const reactNextAdapter: FrameworkAdapter = {
     for (const filePath of files) {
       let content: string;
       try {
-        content = readFileSync(filePath, 'utf8');
+        content = await readFile(filePath, 'utf8');
       } catch {
         continue;
       }
-      const sourceFile = ts.createSourceFile(
-        filePath,
-        content,
-        ts.ScriptTarget.ES2020,
-        true,
-        ts.ScriptKind.TSX,
-      );
+
+      const ext = extname(filePath).toLowerCase();
+      const kind =
+        ext === '.tsx'
+          ? ts.ScriptKind.TSX
+          : ext === '.ts'
+            ? ts.ScriptKind.TS
+            : ext === '.jsx'
+              ? ts.ScriptKind.JSX
+              : ts.ScriptKind.JS;
+      const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.ES2020, true, kind);
       if (!sourceFile) continue;
       const ns = deriveNamespace(filePath);
       results.push(

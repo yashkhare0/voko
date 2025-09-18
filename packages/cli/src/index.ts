@@ -20,17 +20,19 @@ program
     try {
       logger.info('scan:start');
       const config = getConfig(flags);
-      logger.debug('scan:config', { frameworks: config.frameworks });
+      logger.debug('scan:config:loaded', { frameworks: config.frameworks });
       // Subsequent subcommands implemented in VKO-CLI-003
       logger.info('scan:noop');
-      process.exit(0);
+      return;
     } catch (err) {
       if (err instanceof ConfigError) {
-        logger.error('scan:config', { code: err.code, message: err.message });
-        process.exit(4);
+        logger.error('scan:config:error', { code: err.code, message: err.message });
+        process.exitCode = 4;
+        return;
       }
       logger.error('scan:error', { message: err instanceof Error ? err.message : String(err) });
-      process.exit(3);
+      process.exitCode = 3;
+      return;
     }
   });
 

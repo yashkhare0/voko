@@ -8,15 +8,30 @@ export interface SourceLoc {
   end: number;
 }
 
-export interface CandidateIR {
-  id: string; // hash(file+range+tag)
-  namespace: string; // adapter-derived
-  kind: NodeKind; // block/attr/rich
-  tag?: string; // h1, p, Button, etc.
-  attr?: string; // alt, title, aria-label, placeholder
-  text: string; // normalized content; rich keeps inline placeholders
-  inlineTags?: InlineTag[];
-  hints?: Record<string, string>;
-  loc: SourceLoc;
-  framework: string; // "react-next", "vue-nuxt", ...
+interface BaseIR {
+  readonly id: string; // hash(file+range+tag[+kind+attr?])
+  readonly namespace: string; // adapter-derived
+  readonly text: string; // normalized content; rich keeps inline placeholders
+  readonly hints?: Readonly<Record<string, string>>;
+  readonly loc: Readonly<SourceLoc>;
+  readonly framework: string; // "react-next", "vue-nuxt", ...
 }
+
+export interface BlockIR extends BaseIR {
+  readonly kind: 'block';
+  readonly tag: string; // h1, p, Button, etc.
+}
+
+export interface AttrIR extends BaseIR {
+  readonly kind: 'attr';
+  readonly tag: string; // element owning the attribute
+  readonly attr: string; // alt, title, aria-label, placeholder
+}
+
+export interface RichIR extends BaseIR {
+  readonly kind: 'rich';
+  readonly tag?: string;
+  readonly inlineTags: readonly InlineTag[];
+}
+
+export type CandidateIR = BlockIR | AttrIR | RichIR;

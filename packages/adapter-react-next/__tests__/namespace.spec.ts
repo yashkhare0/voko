@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import adapter from '../src';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('namespace mapping', () => {
   it('app router with group', () => {
