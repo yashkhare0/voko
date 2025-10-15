@@ -4,6 +4,22 @@ Automated i18n assistant for your app. Voko scans code to find user-facing strin
 
 Supported today: React/Next.js (with next-intl). Vue/Nuxt is planned.
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Namespacing (Next.js)](#namespacing-nextjs)
+- [Rich Text Rules](#rich-text-rules)
+- [Client vs Server (Next.js)](#client-vs-server-nextjs)
+- [CLI Reference](#cli-reference)
+- [Working Files & Outputs](#working-files--outputs)
+- [Best Practices](#best-practices)
+- [Examples](#examples)
+- [CI Integration](#ci-integration)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
+
 ---
 
 ## Requirements
@@ -16,18 +32,20 @@ Supported today: React/Next.js (with next-intl). Vue/Nuxt is planned.
 
 Install in your application repo (not this repository):
 
-````bash
+```bash
 npm i -D @voko/cli
 npx voko init
 npx voko scan
 npx voko extract
 npx voko inject --dry-run   # inspect diffs
 npx voko inject --no-dry-run   # apply changes
+```
+
 Recommended PR check:
 
 ```bash
 npx voko scan && npx voko extract && npx voko check
-````
+```
 
 ---
 
@@ -53,7 +71,7 @@ Create `voko.config.json` in your repo root:
 }
 ```
 
-Field reference (high level):
+### Field reference (high level)
 
 - `frameworks`: which adapters to use. For Next.js use `react-next`.
 - `library`: adapter → i18n library (Next: `next-intl`).
@@ -136,7 +154,7 @@ const t = await getTranslator(locale, '<namespace>');
 
 - `voko inject [--dry-run]`
   - Adds `import { useTranslations } from 'next-intl'` and declares `const t = useTranslations('<ns>')` in client files.
-  - Replacement of nodes is limited in this release; review diffs with `--dry-run`.
+  - Replaces plain block text with `{t('<key>')}`, attributes with `{t('<key>')}`, and rich text with `t.rich('<key>', { inlineTag: (c) => <tag>{c}</tag>, ... })`.
   - Default is `--dry-run` (prints unified diffs). Use `--no-dry-run` to apply.
 
 - `voko sync`
@@ -148,7 +166,7 @@ const t = await getTranslator(locale, '<namespace>');
 - `voko check`
   - CI gate: fails if raw strings were introduced (created candidates present).
 
-Exit codes are documented in the PRD. Typical outcomes: `0` success; non-zero for parse, schema, write, or CI violations.
+Exit codes are documented in the [PRD](./PRD.md). Typical outcomes: `0` success; non-zero for parse, schema, write, or CI violations.
 
 ---
 
@@ -160,7 +178,7 @@ Exit codes are documented in the PRD. Typical outcomes: `0` success; non-zero fo
 - `reports/voko-scan-*.json`: scan summaries by namespace.
 - `locales/<locale>/<namespace>.json`: generated/merged locale files.
 
-Locale rules:
+### Locale rules
 
 - Keys sorted lexicographically, trailing newline enforced.
 - New keys in non-default locales are added with empty string values.
@@ -181,7 +199,7 @@ Locale rules:
 
 ## Examples
 
-Locale file (`en/marketing.about.json`):
+### Locale file (`en/marketing.about.json`)
 
 ```json
 {
@@ -201,7 +219,7 @@ Locale file (`en/marketing.about.json`):
 }
 ```
 
-Using next-intl (client component):
+### Using next-intl (client component)
 
 ```tsx
 'use client';
@@ -218,7 +236,7 @@ export default function Page() {
 }
 ```
 
-More patterns:
+### More patterns
 
 - Attribute extraction and usage:
 

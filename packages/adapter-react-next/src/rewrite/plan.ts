@@ -48,6 +48,36 @@ export function planRewriteForFile(filePath: string, candidates: CandidateIR[]):
     }
   }
 
+  // Build replacements for candidates
+  // NOTE: We rely on extractors to provide accurate loc ranges for the node/attr.
+  for (const c of candidates) {
+    const key = c.hints?.key;
+    if (!key) continue;
+    if (c.kind === 'block') {
+      // Replace the entire element content with a t('key') expression
+      // Approximation: wrap in braces within the same tag by replacing inner range
+      const start = c.loc.start;
+      const end = c.loc.end;
+      const replacement = `/* voko */ {t('${key}')}`;
+      edits.push({ start, end, replacement });
+    } else if (c.kind === 'attr' && c.attr) {
+      // Replace attribute initializer to use t('key')
+      const start = c.loc.start;
+      const end = c.loc.end;
+      const attrName = c.attr;
+      const replacement = `${attrName}={t('${key}')}`;
+      edits.push({ start, end, replacement });
+    } else if (c.kind === 'rich') {
+      const start = c.loc.start;
+      const end = c.loc.end;
+      // Build placeholder map from observed inline tags in order
+      const placeholders = (c.inlineTags ?? []).map((tag) => `${tag}: (c) => <${tag}>{c}</${tag}>`);
+      const map = placeholders.length > 0 ? `, { ${placeholders.join(', ')} }` : '';
+      const replacement = `{t.rich('${key}'${map})}`;
+      edits.push({ start, end, replacement });
+    }
+  }
+
   if (imports.length === 0 && edits.length === 0) return null;
   return { file: filePath, imports, edits };
 }

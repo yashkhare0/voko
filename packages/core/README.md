@@ -61,3 +61,37 @@ console.log(printUnifiedDiffs(res.files));
 ## Adapter interface
 
 See `ADAPTER_GUIDE.md` at the repo root for details on implementing a `FrameworkAdapter`.
+
+## Configuration Reference
+
+Example `voko.config.json` (see PRD §8):
+
+```json
+{
+  "$schema": "https://voko.dev/schema/v1.json",
+  "frameworks": ["react-next"],
+  "library": { "react-next": "next-intl" },
+  "defaultLocale": "en",
+  "locales": ["en", "de"],
+  "globs": {
+    "react-next": ["app/**/*.{ts,tsx}", "pages/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"]
+  },
+  "ignore": ["**/__tests__/**", "**/*.stories.*", "node_modules/**"],
+  "namespaceStrategy": { "react-next": "route" },
+  "attributes": ["alt", "title", "aria-label", "placeholder"],
+  "rewrite": { "enabled": true, "rich": true, "keepFormatting": true },
+  "quarantineDays": 14
+}
+```
+
+Fields:
+
+- `frameworks`: adapters to run (e.g., `react-next`).
+- `library`: adapter → i18n library mapping.
+- `defaultLocale`, `locales`: locales supported.
+- `globs[adapterId]`: file globs to scan.
+- `ignore`: glob patterns to skip.
+- `namespaceStrategy`: `route | flat` per adapter.
+- `attributes`: attributes to extract (`alt`, `title`, `aria-label`, `placeholder`).
+- `rewrite`: injection behavior; `rich` enables placeholders.
+- `quarantineDays`: retention window for trash.

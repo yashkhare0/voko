@@ -58,6 +58,34 @@ import adapter from '../src';
 import type { Config } from '@voko/core';
 
 describe('react-next extract', () => {
+  it('planRewrite adds import, const t, and replacements', async () => {
+    const file = path.resolve(__dirname, 'fixtures/app/(marketing)/about/page.tsx');
+    const files = [file];
+    const cfg: Config = {
+      frameworks: ['react-next'],
+      library: { 'react-next': 'next-intl' },
+      defaultLocale: 'en',
+      locales: ['en'],
+      globs: { 'react-next': [] },
+      ignore: [],
+      namespaceStrategy: { 'react-next': 'route' },
+      attributes: ['alt', 'title', 'aria-label', 'placeholder'],
+      rewrite: { enabled: true, rich: true, keepFormatting: true },
+      quarantineDays: 14,
+    } as const;
+    const ir = await adapter.extract(files, cfg);
+    // simulate keys present on candidates as hints for rewrite
+    const withKeys = ir.map((c, i) => ({
+      ...c,
+      hints: { key: c.kind === 'attr' ? `${c.tag}.${c.attr}` : `hero.${c.kind}.${i}` },
+    }));
+    const patches = await adapter.planRewrite(withKeys, { dryRun: true });
+    expect(patches.length).toBeGreaterThanOrEqual(1);
+    const combined = patches.flatMap((p) => p.edits.map((e) => e.replacement)).join('\n');
+    expect(combined).toMatch(/useTranslations\('/);
+    expect(combined).toMatch(/t\('/);
+    expect(combined).toMatch(/t\.rich\('/);
+  });
   it('extracts blocks, attrs, and rich with namespace', async () => {
     const file = path.resolve(__dirname, 'fixtures/app/(marketing)/about/page.tsx');
     const files = [file];

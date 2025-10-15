@@ -13,7 +13,8 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    include: ['packages/**/__tests__/**/*.spec.{ts,tsx,js,jsx}'],
+    include: ['**/__tests__/**/*.spec.{ts,tsx,js,jsx}'],
+    passWithNoTests: true,
     exclude: [
       '**/node_modules/**',
       '**/.pnpm/**',

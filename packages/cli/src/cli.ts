@@ -226,8 +226,50 @@ program
     });
     try {
       logger.info('check:start');
-      // Load config to validate shape; additional checks can be added later.
-      loadConfig(opts.config ? { path: opts.config } : {});
+      const config = loadConfig(opts.config ? { path: opts.config } : {});
+
+      interface MinimalAdapter {
+        id: string;
+        detect(root: string): Promise<boolean>;
+        files(globs: string[], ignore: string[]): Promise<string[]>;
+        extract(files: string[], cfg: unknown): Promise<CandidateIR[]>;
+      }
+      const adapters: MinimalAdapter[] = [];
+      if (config.frameworks.includes('react-next')) {
+        let adapter: { default?: MinimalAdapter } | undefined;
+        try {
+          adapter = (await import('@voko/adapter-react-next')) as { default?: MinimalAdapter };
+        } catch {
+          try {
+            const { resolve } = await import('node:path');
+            const modPath = resolve(__dirname, '../../adapter-react-next/dist/index.cjs');
+            adapter = (await import(modPath)) as { default?: MinimalAdapter };
+          } catch {
+            adapter = undefined;
+          }
+        }
+        const impl = adapter?.default;
+        if (impl) adapters.push(impl);
+      }
+
+      const candidates: CandidateIR[] = [];
+      for (const a of adapters) {
+        const ok = await a.detect(process.cwd());
+        if (!ok) continue;
+        const globs = config.globs[a.id] ?? [];
+        const files = await a.files(globs, config.ignore ?? []);
+        const extracted = await a.extract(files, config);
+        candidates.push(...extracted);
+      }
+
+      const manifest = readManifest();
+      const { result } = reconcileManifest(candidates as unknown as CandidateIR[], manifest);
+      const { runCheck } = await import('@voko/core');
+      const checkRes = runCheck(result);
+      if (checkRes.violations.length > 0) {
+        logger.error('check:violations', { violations: checkRes.violations });
+        process.exit(9);
+      }
       logger.info('check:ok');
       process.exit(0);
     } catch (err) {
