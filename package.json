@@ -11,6 +11,7 @@
     "start": "node dist/index.js",
     "dev": "tsc -w",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "prepare": "husky",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write ."
