@@ -1,0 +1,75 @@
+{
+  "name": "voko",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "voko": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc -w",
+    "test": "jest",
+    "prepare": "husky",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "i18n",
+    "cli",
+    "translation",
+    "localization",
+    "automation"
+  ],
+  "author": "Voko Team",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashkhare0/voko.git"
+  },
+  "lint-staged": {
+    "*.{ts,js,json,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.0.1",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "deep-object-diff": "^1.1.9",
+    "dotenv": "^17.2.3",
+    "fs-extra": "^11.3.2",
+    "ora": "^9.0.0",
+    "translate": "^3.0.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.9",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "semantic-release": "^25.0.2",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.9.3"
+  }
+}
