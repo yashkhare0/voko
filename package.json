@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "bin": {
-    "voko": "./dist/index.js"
+    "voko": "./dist/index.js",
+    "voko-cli": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
