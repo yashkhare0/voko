@@ -19,7 +19,7 @@ You can use `voko` directly with `npx` or install it globally/locally.
 
 ```bash
 # Run directly
-npx voko-cli init
+npx @yashkhare0/voko-cli init
 
 # Install globally
 npm install -g voko-cli
@@ -37,7 +37,7 @@ yarn add -D voko-cli
 Run the `init` command to set up your project. This will create a `voko.config.json` file.
 
 ```bash
-npx voko-cli init
+npx @yashkhare0/voko-cli init
 ```
 
 You will be prompted for:
@@ -51,7 +51,7 @@ You will be prompted for:
 **Non-Interactive Mode (Flags):**
 
 ```bash
-npx voko-cli init \
+npx @yashkhare0/voko-cli init \
   --base-file src/locales/en.json \
   --base-lang en \
   --languages es,fr,de \
@@ -69,7 +69,7 @@ Run the `sync` command to update your locale files. This will:
 4.  Write the updates to the files.
 
 ```bash
-npx voko-cli sync
+npx @yashkhare0/voko-cli sync
 ```
 
 **Strict Mode:**
@@ -77,7 +77,7 @@ npx voko-cli sync
 To remove keys from target files that are no longer in the base file:
 
 ```bash
-npx voko-cli sync --strict
+npx @yashkhare0/voko-cli sync --strict
 ```
 
 ## Configuration

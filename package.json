@@ -1,11 +1,14 @@
 {
-  "name": "voko-cli",
+  "name": "@yashkhare0/voko-cli",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
-    "voko": "./dist/index.js",
-    "voko-cli": "./dist/index.js"
+    "voko": "dist/index.js",
+    "voko-cli": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",

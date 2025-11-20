@@ -1,7 +1,7 @@
 import './style.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Copy to clipboard functionality
+  // Conpx @yashkhare0/voko-cli-clipboard functionality
   const setupCopyButtons = (selector: string) => {
     document.querySelectorAll(selector).forEach((btn) => {
       btn.addEventListener('click', async () => {
