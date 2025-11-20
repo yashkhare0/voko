@@ -5,136 +5,198 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>voko - Interactive i18n CLI</title>
-    <meta
-      name="description"
-      content="Automate your i18n workflow with voko. Interactive setup, multi-engine translation, and strict synchronization."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="description"
+      content="Automate your i18n workflow with voko. Interactive setup, multi-engine translation, and strict synchronization." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
+    <div class="bg-glow"></div>
     <div id="app">
       <nav class="navbar">
-        <div class="logo">voko</div>
-        <div class="links">
-          <a href="#features">Features</a>
-          <a href="#installation">Install</a>
-          <a href="#usage">Usage</a>
-          <a href="https://github.com/yashkhare0/voko" target="_blank" class="github-link"
-            ><i class="fab fa-github"></i> GitHub</a
-          >
+        <div class="nav-container">
+          <div class="logo">voko<span class="dot">.</span></div>
+          <div class="links">
+            <a href="#features">Features</a>
+            <a href="#usage">Usage</a>
+            <a href="#installation">Install</a>
+            <a href="https://github.com/yashkhare0/voko" target="_blank" class="github-link"><i class="fab fa-github"></i>
+              GitHub</a>
+            </div>
         </div>
       </nav>
 
       <header class="hero">
         <div class="hero-content">
-          <h1 class="gradient-text">Automate Your i18n Workflow</h1>
-          <p class="tagline">
-            Interactive setup, multi-engine translation, and strict synchronization for modern
-            JavaScript apps.
-          </p>
+          <div class="badge">v1.0.0 is now available</div>
+          <h1 class="gradient-text">Internationalization<br>Made Effortless</h1>
+          <p class="tagline">The interactive CLI that automates your i18n workflow. Setup, translate, and sync in seconds.</p>
           <div class="cta-group">
             <button class="btn primary" id="copy-install">
               <span class="cmd">npx voko init</span>
               <i class="fas fa-copy"></i>
             </button>
-            <a href="https://github.com/yashkhare0/voko" target="_blank" class="btn secondary"
-              >View Documentation</a
-            >
+            <a href="https://github.com/yashkhare0/voko" target="_blank" class="btn secondary">
+              <span>Read the Docs</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
         </div>
+        
         <div class="hero-visual">
           <div class="terminal-window">
             <div class="terminal-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
+              <div class="traffic-lights">
+                <span class="light red"></span>
+                <span class="light yellow"></span>
+                <span class="light green"></span>
+              </div>
+              <div class="terminal-title">bash — voko init</div>
+              </div>
             <div class="terminal-body">
-              <div class="line">
-                <span class="prompt">➜</span> <span class="cmd">npx voko init</span>
-              </div>
-              <div class="line output">
-                ? Path to your base language file: <span class="input">src/locales/en.json</span>
-              </div>
-              <div class="line output">
-                ? Select target languages: <span class="input">es, fr, de</span>
-              </div>
-              <div class="line output">
-                ? Select translation engine: <span class="input">DeepL</span>
-              </div>
+              <div class="line"><span class="prompt">➜</span> <span class="cmd">npx voko init</span></div>
+              <div class="line output">? Path to your base language file: <span class="input">src/locales/en.json</span></div>
+              <div class="line output">? Select target languages: <span class="input">es, fr, de, ja</span></div>
+              <div class="line output">? Select translation engine: <span class="input">DeepL</span></div>
+              <div class="line output">? Enter API key env var: <span class="input">DEEPL_KEY</span></div>
+              <div class="line spacer"></div>
               <div class="line success">✔ Configuration saved to voko.config.json</div>
-              <div class="line success">✔ Created es.json</div>
-              <div class="line success">✔ Created fr.json</div>
-              <div class="line success">✔ Created de.json</div>
+              <div class="line success">✔ Created es.json (translated)</div>
+              <div class="line success">✔ Created fr.json (translated)</div>
+              <div class="line success">✔ Created de.json (translated)</div>
+              <div class="line success">✔ Created ja.json (translated)</div>
               <div class="line"><span class="prompt">➜</span> <span class="cursor">_</span></div>
             </div>
           </div>
         </div>
       </header>
 
-      <section id="features" class="features">
-        <h2>Why voko?</h2>
+      <section id="features" class="features section-padding">
+        <div class="section-header">
+          <h2>Powerful Features</h2>
+          <p>Everything you need to manage translations without the headache.</p>
+        </div>
         <div class="feature-grid">
           <div class="feature-card">
-            <div class="icon"><i class="fas fa-magic"></i></div>
-            <h3>Interactive Setup</h3>
-            <p>
-              Easy-to-use wizard guides you through configuring languages, engines, and paths in
-              seconds.
-            </p>
+            <div class="icon-box"><i class="fas fa-magic"></i></div>
+            <h3>Interactive Wizard</h3>
+            <p>Forget manual config files. Our CLI guides you through setting up languages, paths, and engines in seconds.</p>
           </div>
           <div class="feature-card">
-            <div class="icon"><i class="fas fa-language"></i></div>
+            <div class="icon-box"><i class="fas fa-language"></i></div>
             <h3>Multi-Engine Support</h3>
-            <p>
-              Choose your preferred translation provider: Google Translate, DeepL, LibreTranslate,
-              or Yandex.
+            <p>Plug in your favorite translation service. We support Google Translate, DeepL, LibreTranslate, and Yandex out of the
+              box.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box"><i class="fas fa-sync-alt"></i></div>
+            <h3>Smart Synchronization</h3>
+            <p>Automatically detect and translate missing keys. Keep your locale files perfectly in sync with your base language.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon"><i class="fas fa-sync-alt"></i></div>
-            <h3>Smart Sync</h3>
-            <p>
-              Automatically translates missing keys. Use <code>--strict</code> mode to keep locale
-              files clean and synchronized.
+            <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+            <h3>Strict Mode</h3>
+            <p>Keep your files clean. Use <code>--strict</code> to automatically remove keys that no longer exist in your base file.
             </p>
-          </div>
-          <div class="feature-card">
-            <div class="icon"><i class="fas fa-code"></i></div>
-            <h3>Framework Agnostic</h3>
-            <p>Works with React, Vue, Svelte, Node.js, or any project using JSON locale files.</p>
+            </div>
+            </div>
+            </section>
+            
+            <section id="usage" class="usage section-padding">
+              <div class="section-header">
+                <h2>Simple Usage</h2>
+                <p>Designed to fit into your existing workflow.</p>
+              </div>
+            
+              <div class="usage-container">
+                <div class="usage-step">
+                  <div class="step-number">01</div>
+                  <div class="step-content">
+                    <h3>Initialize</h3>
+                    <p>Run the init command to generate your configuration file and create initial locale files.</p>
+                    <div class="code-snippet">
+                      <code>npx voko init</code>
+                      <button class="copy-btn-mini" data-clipboard="npx voko init"><i class="far fa-copy"></i></button>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="usage-step">
+                  <div class="step-number">02</div>
+                  <div class="step-content">
+                    <h3>Sync & Translate</h3>
+                    <p>Whenever you add new keys to your base file, run sync to update all other languages.</p>
+                    <div class="code-snippet">
+                      <code>npx voko sync</code>
+                      <button class="copy-btn-mini" data-clipboard="npx voko sync"><i class="far fa-copy"></i></button>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="usage-step">
+                  <div class="step-number">03</div>
+                  <div class="step-content">
+                    <h3>Automate</h3>
+                    <p>Add it to your package.json scripts for easy access or CI/CD integration.</p>
+                    <div class="code-snippet">
+                      <code>"i18n": "voko sync --strict"</code>
+                      <button class="copy-btn-mini" data-clipboard='"i18n": "voko sync --strict"'><i
+                          class="far fa-copy"></i></button>
+                    </div>
+                  </div>
           </div>
         </div>
       </section>
 
-      <section id="installation" class="installation">
-        <h2>Get Started</h2>
-        <p>Run directly with npx or install globally.</p>
-        <div class="code-block">
-          <pre><code>npm install -g voko</code></pre>
-          <button class="copy-btn" data-clipboard="npm install -g voko">
-            <i class="fas fa-copy"></i>
-          </button>
-        </div>
-        <div class="code-block">
-          <pre><code>npx voko init</code></pre>
-          <button class="copy-btn" data-clipboard="npx voko init">
-            <i class="fas fa-copy"></i>
-          </button>
+      <section id="installation" class="installation section-padding">
+        <div class="install-box">
+          <h2>Ready to get started?</h2>
+          <p>Install voko globally or use it directly with npx.</p>
+      
+          <div class="tabs">
+            <button class="tab active" data-tab="npm">npm</button>
+            <button class="tab" data-tab="pnpm">pnpm</button>
+            <button class="tab" data-tab="yarn">yarn</button>
+          </div>
+      
+          <div class="tab-content active" id="npm">
+            <div class="code-block-large">
+              <code>npm install -g voko</code>
+              <button class="copy-btn" data-clipboard="npm install -g voko"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+          </div>
+      
+          <div class="tab-content" id="pnpm">
+            <div class="code-block-large">
+              <code>pnpm add -g voko</code>
+              <button class="copy-btn" data-clipboard="pnpm add -g voko"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+          </div>
+      
+          <div class="tab-content" id="yarn">
+            <div class="code-block-large">
+              <code>yarn global add voko</code>
+              <button class="copy-btn" data-clipboard="yarn global add voko"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <footer>
-        <p>&copy; 2025 Voko Team. Released under MIT License.</p>
+        <div class="footer-content">
+          <div class="footer-logo">voko<span class="dot">.</span></div>
+          <div class="footer-links">
+            <a href="https://github.com/yashkhare0/voko" target="_blank">GitHub</a>
+            <a href="https://www.npmjs.com/package/voko" target="_blank">NPM</a>
+            <a href="https://github.com/yashkhare0/voko/blob/main/LICENSE" target="_blank">License</a>
+          </div>
+          <p class="copyright">&copy; 2025 Voko Team. Released under MIT License.</p>
+        </div>
       </footer>
     </div>
     <script type="module" src="/src/main.ts"></script>
