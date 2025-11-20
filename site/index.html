@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>voko - Interactive i18n CLI</title>
+    <meta
+      name="description"
+      content="Automate your i18n workflow with voko. Interactive setup, multi-engine translation, and strict synchronization."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <nav class="navbar">
+        <div class="logo">voko</div>
+        <div class="links">
+          <a href="#features">Features</a>
+          <a href="#installation">Install</a>
+          <a href="#usage">Usage</a>
+          <a href="https://github.com/yashkhare0/voko" target="_blank" class="github-link"
+            ><i class="fab fa-github"></i> GitHub</a
+          >
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-content">
+          <h1 class="gradient-text">Automate Your i18n Workflow</h1>
+          <p class="tagline">
+            Interactive setup, multi-engine translation, and strict synchronization for modern
+            JavaScript apps.
+          </p>
+          <div class="cta-group">
+            <button class="btn primary" id="copy-install">
+              <span class="cmd">npx voko init</span>
+              <i class="fas fa-copy"></i>
+            </button>
+            <a href="https://github.com/yashkhare0/voko" target="_blank" class="btn secondary"
+              >View Documentation</a
+            >
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="terminal-body">
+              <div class="line">
+                <span class="prompt">➜</span> <span class="cmd">npx voko init</span>
+              </div>
+              <div class="line output">
+                ? Path to your base language file: <span class="input">src/locales/en.json</span>
+              </div>
+              <div class="line output">
+                ? Select target languages: <span class="input">es, fr, de</span>
+              </div>
+              <div class="line output">
+                ? Select translation engine: <span class="input">DeepL</span>
+              </div>
+              <div class="line success">✔ Configuration saved to voko.config.json</div>
+              <div class="line success">✔ Created es.json</div>
+              <div class="line success">✔ Created fr.json</div>
+              <div class="line success">✔ Created de.json</div>
+              <div class="line"><span class="prompt">➜</span> <span class="cursor">_</span></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="features" class="features">
+        <h2>Why voko?</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="icon"><i class="fas fa-magic"></i></div>
+            <h3>Interactive Setup</h3>
+            <p>
+              Easy-to-use wizard guides you through configuring languages, engines, and paths in
+              seconds.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fas fa-language"></i></div>
+            <h3>Multi-Engine Support</h3>
+            <p>
+              Choose your preferred translation provider: Google Translate, DeepL, LibreTranslate,
+              or Yandex.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fas fa-sync-alt"></i></div>
+            <h3>Smart Sync</h3>
+            <p>
+              Automatically translates missing keys. Use <code>--strict</code> mode to keep locale
+              files clean and synchronized.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fas fa-code"></i></div>
+            <h3>Framework Agnostic</h3>
+            <p>Works with React, Vue, Svelte, Node.js, or any project using JSON locale files.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="installation" class="installation">
+        <h2>Get Started</h2>
+        <p>Run directly with npx or install globally.</p>
+        <div class="code-block">
+          <pre><code>npm install -g voko</code></pre>
+          <button class="copy-btn" data-clipboard="npm install -g voko">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+        <div class="code-block">
+          <pre><code>npx voko init</code></pre>
+          <button class="copy-btn" data-clipboard="npx voko init">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </section>
+
+      <footer>
+        <p>&copy; 2025 Voko Team. Released under MIT License.</p>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
