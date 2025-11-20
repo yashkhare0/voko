@@ -17,15 +17,15 @@ You can use `voko` directly with `npx` or install it globally/locally.
 
 ```bash
 # Run directly
-npx voko init
+npx voko-cli init
 
 # Install globally
-npm install -g voko
+npm install -g voko-cli
 
 # Install as dev dependency
-npm install -D voko
-pnpm add -D voko
-yarn add -D voko
+npm install -D voko-cli
+pnpm add -D voko-cli
+yarn add -D voko-cli
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ yarn add -D voko
 Run the `init` command to set up your project. This will create a `voko.config.json` file.
 
 ```bash
-npx voko init
+npx voko-cli init
 ```
 
 You will be prompted for:
@@ -49,7 +49,7 @@ You will be prompted for:
 **Non-Interactive Mode (Flags):**
 
 ```bash
-npx voko init \
+npx voko-cli init \
   --base-file src/locales/en.json \
   --base-lang en \
   --languages es,fr,de \
@@ -67,7 +67,7 @@ Run the `sync` command to update your locale files. This will:
 4.  Write the updates to the files.
 
 ```bash
-npx voko sync
+npx voko-cli sync
 ```
 
 **Strict Mode:**
@@ -75,7 +75,7 @@ npx voko sync
 To remove keys from target files that are no longer in the base file:
 
 ```bash
-npx voko sync --strict
+npx voko-cli sync --strict
 ```
 
 ## Configuration
@@ -110,7 +110,7 @@ To test the package locally before publishing:
 ```bash
 npm link
 cd /path/to/test/project
-voko init
+voko-cli init
 ```
 
 ### Running Tests
