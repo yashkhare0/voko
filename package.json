@@ -7,8 +7,8 @@
     "access": "public"
   },
   "bin": {
-    "voko": "dist/index.js",
-    "voko-cli": "dist/index.js"
+    "voko": "./dist/index.js",
+    "voko-cli": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -18,7 +18,8 @@
     "test:coverage": "jest --coverage",
     "prepare": "husky",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "i18n",

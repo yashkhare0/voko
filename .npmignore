@@ -1,0 +1,13 @@
+node_modules
+src
+.github
+site
+coverage
+.env
+.DS_Store
+tsconfig.json
+jest.config.js
+eslint.config.js
+commitlint.config.js
+.prettierrc
+.husky
