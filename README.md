@@ -13,6 +13,28 @@
 - **CI/CD Friendly**: Supports CLI flags for automated environments.
 - **Framework Agnostic**: Works with any project structure (React, Vue, Node.js, etc.).
 
+## Supported Languages
+
+### Europe
+
+Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt), Dutch (nl), Russian (ru), Polish (pl), Ukrainian (uk), Swedish (sv), Danish (da), Finnish (fi), Norwegian (no), Greek (el), Czech (cs), Romanian (ro), Hungarian (hu)
+
+### Asia
+
+Chinese (Simplified) (zh), Chinese (Traditional) (zh-TW), Japanese (ja), Korean (ko), Hindi (hi), Arabic (ar), Turkish (tr), Vietnamese (vi), Thai (th), Indonesian (id), Malay (ms), Bengali (bn), Hebrew (he)
+
+### Americas
+
+English (US) (en), Spanish (Mexico) (es-MX), Portuguese (Brazil) (pt-BR), French (Canada) (fr-CA)
+
+### Africa
+
+Swahili (sw), Amharic (am), Yoruba (yo), Zulu (zu), Afrikaans (af)
+
+### Oceania
+
+English (Australia) (en-AU)
+
 ## Installation
 
 You can use `voko` directly with `npx` or install it globally/locally.

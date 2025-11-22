@@ -1,8 +1,9 @@
 import { Command } from 'commander';
-import { input, select, checkbox } from '@inquirer/prompts';
+import { input, select, checkbox, Separator } from '@inquirer/prompts';
 import fs from 'fs-extra';
 import path from 'path';
 import { saveConfig, Config } from '../utils/config';
+import { groupedLanguages } from '../utils/languages';
 import { logger } from '../utils/logger';
 
 export const initCommand = new Command('init')
@@ -12,6 +13,7 @@ export const initCommand = new Command('init')
   .option('--languages <list>', 'Comma-separated list of target languages')
   .option('--engine <engine>', 'Translation engine (google, deepl, libre, yandex)')
   .option('--api-key-env <name>', 'Environment variable name for API key')
+  .option('--export-type <type>', 'Export file type (ts, js, none)')
   .action(async (options) => {
     logger.info("Welcome to voko! Let's set up your i18n configuration.");
 
@@ -49,19 +51,17 @@ export const initCommand = new Command('init')
     if (options.languages) {
       selectedLanguages = options.languages.split(',').map((l: string) => l.trim());
     } else {
-      const regions = {
-        Europe: ['es', 'fr', 'de', 'it', 'pt', 'nl', 'ru', 'pl'],
-        Asia: ['zh', 'ja', 'ko', 'hi', 'ar', 'tr', 'vi', 'th'],
-        Americas: ['es-MX', 'pt-BR', 'fr-CA'],
-      };
-
-      // Flatten common languages for individual selection if needed, or just offer a curated list
-      // For simplicity/robustness, let's offer a multi-select of common languages + custom input
-      const commonLanguages = [...regions.Europe, ...regions.Asia, ...regions.Americas].sort();
+      const choices: any[] = [];
+      for (const [region, langs] of Object.entries(groupedLanguages)) {
+        choices.push(new Separator(` = ${region} = `));
+        choices.push(...langs);
+      }
 
       selectedLanguages = await checkbox({
         message: 'Select target languages:',
-        choices: commonLanguages.map((lang) => ({ name: lang, value: lang })),
+        choices,
+        pageSize: 20,
+        loop: false,
       });
     }
 
@@ -92,12 +92,25 @@ export const initCommand = new Command('init')
       });
     }
 
+    let exportType = options.exportType;
+    if (!exportType) {
+      exportType = await select({
+        message: 'Do you want to generate an index file exporting all locales?',
+        choices: [
+          { name: 'No', value: 'none' },
+          { name: 'TypeScript (index.ts)', value: 'ts' },
+          { name: 'JavaScript (index.js)', value: 'js' },
+        ],
+      });
+    }
+
     const config: Config = {
       baseLanguage,
       baseFile,
       languages: selectedLanguages,
       engine: engine as Config['engine'],
       apiKeyEnvVar,
+      exportType: exportType as Config['exportType'],
     };
 
     await saveConfig(config);

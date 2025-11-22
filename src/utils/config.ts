@@ -10,6 +10,7 @@ export const ConfigSchema = z.object({
   languages: z.array(z.string()),
   engine: z.enum(['google', 'deepl', 'libre', 'yandex']),
   apiKeyEnvVar: z.string().optional(),
+  exportType: z.enum(['ts', 'js', 'none']).optional(),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;

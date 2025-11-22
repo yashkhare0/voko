@@ -72,15 +72,34 @@ export const syncCommand = new Command('sync')
           } else {
             if (!targetObj[key]) {
               try {
+                // Map language code to ISO 639-1 (2-letter code) if needed
+                // e.g. fr-ca -> fr
+                const targetLang = lang.split('-')[0];
+
                 const translated = await translate(String(baseObj[key]), {
                   from: baseLanguage,
-                  to: lang,
+                  to: targetLang,
                 });
                 targetObj[key] = translated;
                 addedCount++;
-              } catch (error) {
+              } catch (error: any) {
+                const errorMessage = error?.message || String(error);
+
+                // Check for quota exceeded or rate limit errors
+                if (
+                  errorMessage.includes('quota') ||
+                  errorMessage.includes('429') ||
+                  errorMessage.includes('Too Many Requests')
+                ) {
+                  spinner.fail(`Translation API quota exceeded or rate limited.`);
+                  logger.error(`Stopped at key: ${currentKey}`);
+                  logger.error('Please check your API usage or try again later.');
+                  process.exit(0); // Exit gracefully
+                }
+
                 spinner.fail(`Failed to translate key: ${currentKey}`);
-                console.error(error);
+                logger.error(`Error: ${errorMessage}`);
+                // Continue with other keys instead of crashing, unless it's a critical error handled above
               }
             }
           }
@@ -116,5 +135,39 @@ export const syncCommand = new Command('sync')
       spinner.succeed(
         `Synced ${lang}: +${addedCount} keys${options.strict ? `, -${removedCount} keys` : ''}`,
       );
+    }
+
+    // Generate index file if requested
+    if (config.exportType && config.exportType !== 'none') {
+      const indexSpinner = ora('Generating index file...').start();
+      try {
+        const exportType = config.exportType;
+        const indexFile = path.join(baseDir, `index.${exportType}`);
+
+        // Get all json files in the directory
+        const files = await fs.readdir(baseDir);
+        const jsonFiles = files.filter((f) => f.endsWith('.json'));
+
+        let content = '';
+        const exports: string[] = [];
+
+        for (const file of jsonFiles) {
+          const langCode = path.basename(file, '.json').replace(/-/g, '_');
+          content += `import ${langCode} from './${file}';\n`;
+          exports.push(langCode);
+        }
+
+        content += `\nexport const locales = {\n  ${exports.join(',\n  ')}\n};\n`;
+
+        if (exportType === 'ts') {
+          content += `\nexport type Locale = keyof typeof locales;\n`;
+        }
+
+        await fs.writeFile(indexFile, content);
+        indexSpinner.succeed(`Generated ${indexFile}`);
+      } catch (error) {
+        indexSpinner.fail('Failed to generate index file');
+        console.error(error);
+      }
     }
   });

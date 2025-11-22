@@ -1,0 +1,6 @@
+{
+  "baseLanguage": "en",
+  "baseFile": "src/locales/en.json",
+  "languages": ["es"],
+  "engine": "google"
+}
