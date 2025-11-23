@@ -2,7 +2,6 @@
 
 **voko** is a powerful, interactive CLI tool for managing i18n (internationalization) in your JavaScript and TypeScript projects. It automates the setup, translation, and synchronization of locale files using popular translation engines.
 
-
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/yashkhare0/voko?utm_source=oss&utm_medium=github&utm_campaign=yashkhare0%2Fvoko&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 ## Features
@@ -199,3 +198,25 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 ## License
 
 MIT
+
+## Troubleshooting
+
+### Common Issues
+
+#### API Key Errors
+
+If you encounter errors related to API keys (e.g., with DeepL or Google Translate), ensure that:
+
+1. You have correctly set the environment variable in your shell or `.env` file.
+2. The environment variable name matches what is in `voko.config.json`.
+3. Your API key has sufficient quota and permissions.
+
+#### "Command not found"
+
+If `voko` or `voko-cli` is not found, try running it with `npx`:
+
+```bash
+npx @yashkhare0/voko-cli sync
+```
+
+Or ensure your global installation path is in your system's PATH.
