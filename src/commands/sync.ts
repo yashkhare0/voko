@@ -33,6 +33,7 @@ export const syncCommand = new Command('sync')
       aiEndpoint,
       azureEndpoint,
       azureApiKey,
+      azureRegion,
     } = config;
     const baseFilePath = path.resolve(process.cwd(), baseFile);
 
@@ -130,7 +131,7 @@ export const syncCommand = new Command('sync')
                       headers: {
                         'Ocp-Apim-Subscription-Key': apiKey,
                         'Content-Type': 'application/json',
-                        // 'Ocp-Apim-Subscription-Region': '...', // Missing region info
+                        ...(azureRegion ? { 'Ocp-Apim-Subscription-Region': azureRegion } : {}),
                       },
                     },
                   );

@@ -15,6 +15,7 @@ export const ConfigSchema = z.object({
   aiEndpoint: z.string().optional(),
   azureEndpoint: z.string().optional(),
   azureApiKey: z.string().optional(),
+  azureRegion: z.string().optional(),
   exportType: z.enum(['ts', 'js', 'none']).optional(),
 });
 

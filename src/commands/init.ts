@@ -85,6 +85,7 @@ export const initCommand = new Command('init')
     let aiEndpoint = '';
     let azureEndpoint = '';
     let azureApiKey = '';
+    let azureRegion = '';
 
     if (engine === 'ai') {
       aiModel = await select({
@@ -109,6 +110,10 @@ export const initCommand = new Command('init')
 
       azureApiKey = await input({
         message: 'Enter your Azure API Key (or environment variable name):',
+      });
+
+      azureRegion = await input({
+        message: 'Enter your Azure Region (optional, leave blank for global):',
       });
     }
 
@@ -149,6 +154,7 @@ export const initCommand = new Command('init')
       aiEndpoint,
       azureEndpoint,
       azureApiKey,
+      azureRegion,
       exportType: exportType as Config['exportType'],
     };
 
