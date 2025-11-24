@@ -3,6 +3,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import ora from 'ora';
 import translate from 'translate';
+import { ChatOpenAI } from '@langchain/openai';
+import axios from 'axios';
 import { loadConfig } from '../utils/config';
 import { logger } from '../utils/logger';
 import dotenv from 'dotenv';
@@ -20,7 +22,18 @@ export const syncCommand = new Command('sync')
       return;
     }
 
-    const { baseFile, languages, engine, apiKeyEnvVar, baseLanguage } = config;
+    const {
+      baseFile,
+      languages,
+      engine,
+      apiKeyEnvVar,
+      baseLanguage,
+      aiModel,
+      aiApiKey,
+      aiEndpoint,
+      azureEndpoint,
+      azureApiKey,
+    } = config;
     const baseFilePath = path.resolve(process.cwd(), baseFile);
 
     if (!(await fs.pathExists(baseFilePath))) {
@@ -32,12 +45,21 @@ export const syncCommand = new Command('sync')
     const baseDir = path.dirname(baseFilePath);
 
     // Configure translate
-    translate.engine = engine;
+    if (engine !== 'ai' && engine !== 'azure') {
+      translate.engine = engine as any;
+    }
     if (apiKeyEnvVar && process.env[apiKeyEnvVar]) {
       translate.key = process.env[apiKeyEnvVar];
-    } else if (engine !== 'google') {
+    } else if (engine !== 'google' && engine !== 'ai' && engine !== 'azure') {
       logger.warn(`Warning: API key environment variable ${apiKeyEnvVar} is missing or empty.`);
     }
+
+    // Helper to get API key value (direct or from env)
+    const getApiKey = (keyOrEnv: string | undefined) => {
+      if (!keyOrEnv) return undefined;
+      if (process.env[keyOrEnv]) return process.env[keyOrEnv];
+      return keyOrEnv;
+    };
 
     for (const lang of languages) {
       const spinner = ora(`Syncing ${lang}...`).start();
@@ -75,11 +97,60 @@ export const syncCommand = new Command('sync')
                 // Map language code to ISO 639-1 (2-letter code) if needed
                 // e.g. fr-ca -> fr
                 const targetLang = lang.split('-')[0];
+                let translated = '';
 
-                const translated = await translate(String(baseObj[key]), {
-                  from: baseLanguage,
-                  to: targetLang,
-                });
+                if (engine === 'ai') {
+                  const apiKey = getApiKey(aiApiKey);
+                  const llm = new ChatOpenAI({
+                    model: aiModel,
+                    apiKey,
+                    configuration: {
+                      baseURL: aiEndpoint,
+                    },
+                    temperature: 0,
+                  });
+
+                  const response = await llm.invoke(
+                    `Translate the following text from ${baseLanguage} to ${targetLang}. Return ONLY the translated text, nothing else:\n\n${String(baseObj[key])}`,
+                  );
+                  translated = String(response.content).trim();
+                } else if (engine === 'azure') {
+                  const apiKey = getApiKey(azureApiKey);
+                  // Azure expects region? Usually yes, but user didn't specify.
+                  // We'll try standard endpoint structure.
+                  const response = await axios.post(
+                    `${azureEndpoint}/translate`,
+                    [{ Text: String(baseObj[key]) }],
+                    {
+                      params: {
+                        'api-version': '3.0',
+                        from: baseLanguage,
+                        to: targetLang,
+                      },
+                      headers: {
+                        'Ocp-Apim-Subscription-Key': apiKey,
+                        'Content-Type': 'application/json',
+                        // 'Ocp-Apim-Subscription-Region': '...', // Missing region info
+                      },
+                    },
+                  );
+                  if (
+                    response.data &&
+                    response.data[0] &&
+                    response.data[0].translations &&
+                    response.data[0].translations[0]
+                  ) {
+                    translated = response.data[0].translations[0].text;
+                  } else {
+                    throw new Error('Invalid response from Azure');
+                  }
+                } else {
+                  translated = await translate(String(baseObj[key]), {
+                    from: baseLanguage,
+                    to: targetLang,
+                  });
+                }
+
                 targetObj[key] = translated;
                 addedCount++;
               } catch (error: any) {

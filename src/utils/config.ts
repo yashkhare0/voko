@@ -8,8 +8,13 @@ export const ConfigSchema = z.object({
   baseLanguage: z.string(),
   baseFile: z.string(),
   languages: z.array(z.string()),
-  engine: z.enum(['google', 'deepl', 'libre', 'yandex']),
+  engine: z.enum(['google', 'deepl', 'libre', 'yandex', 'ai', 'azure']),
   apiKeyEnvVar: z.string().optional(),
+  aiModel: z.string().optional(),
+  aiApiKey: z.string().optional(),
+  aiEndpoint: z.string().optional(),
+  azureEndpoint: z.string().optional(),
+  azureApiKey: z.string().optional(),
   exportType: z.enum(['ts', 'js', 'none']).optional(),
 });
 

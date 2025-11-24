@@ -74,12 +74,46 @@ export const initCommand = new Command('init')
           { name: 'DeepL', value: 'deepl' },
           { name: 'LibreTranslate', value: 'libre' },
           { name: 'Yandex', value: 'yandex' },
+          { name: 'LLM Generation (LangChain)', value: 'ai' },
+          { name: 'Azure Text Translation', value: 'azure' },
         ],
       });
     }
 
+    let aiModel = '';
+    let aiApiKey = '';
+    let aiEndpoint = '';
+    let azureEndpoint = '';
+    let azureApiKey = '';
+
+    if (engine === 'ai') {
+      aiModel = await select({
+        message: 'Select AI Model:',
+        choices: [
+          { name: 'openai/gpt-oss-20b', value: 'openai/gpt-oss-20b' },
+          { name: 'google/gemini-2.5-flash-lite', value: 'google/gemini-2.5-flash-lite' },
+        ],
+      });
+
+      aiEndpoint = await input({
+        message: 'Enter your custom API Endpoint:',
+      });
+
+      aiApiKey = await input({
+        message: 'Enter your API Key (or environment variable name):',
+      });
+    } else if (engine === 'azure') {
+      azureEndpoint = await input({
+        message: 'Enter your Azure Text Translation Endpoint:',
+      });
+
+      azureApiKey = await input({
+        message: 'Enter your Azure API Key (or environment variable name):',
+      });
+    }
+
     let apiKeyEnvVar = options.apiKeyEnv;
-    if (!apiKeyEnvVar && engine !== 'google') {
+    if (!apiKeyEnvVar && engine !== 'google' && engine !== 'ai' && engine !== 'azure') {
       // Google might not need key if using free tier via some libs, but usually does.
       // Actually the 'translate' package uses free google by default without key, but others need key.
       // Let's ask for key env var for all except google if user wants to rely on free google.
@@ -110,6 +144,11 @@ export const initCommand = new Command('init')
       languages: selectedLanguages,
       engine: engine as Config['engine'],
       apiKeyEnvVar,
+      aiModel,
+      aiApiKey,
+      aiEndpoint,
+      azureEndpoint,
+      azureApiKey,
       exportType: exportType as Config['exportType'],
     };
 
