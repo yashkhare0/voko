@@ -1,6 +1,6 @@
 # voko
 
-**voko** is a powerful, interactive CLI tool for managing i18n (internationalization) in your JavaScript and TypeScript projects. It automates the setup, translation, and synchronization of locale files using popular translation engines.
+voko is a powerful, interactive CLI tool for managing i18n (internationalization) in your JavaScript and TypeScript projects. It automates the setup, translation, and synchronization of locale files using popular translation engines.
 
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/yashkhare0/voko?utm_source=oss&utm_medium=github&utm_campaign=yashkhare0%2Fvoko&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
