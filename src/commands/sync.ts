@@ -119,22 +119,23 @@ export const syncCommand = new Command('sync')
                   const apiKey = getApiKey(azureApiKey);
                   // Azure expects region? Usually yes, but user didn't specify.
                   // We'll try standard endpoint structure.
-                  const response = await axios.post(
-                    `${azureEndpoint}/translate`,
-                    [{ Text: String(baseObj[key]) }],
-                    {
-                      params: {
-                        'api-version': '3.0',
-                        from: baseLanguage,
-                        to: targetLang,
-                      },
-                      headers: {
-                        'Ocp-Apim-Subscription-Key': apiKey,
-                        'Content-Type': 'application/json',
-                        ...(azureRegion ? { 'Ocp-Apim-Subscription-Region': azureRegion } : {}),
-                      },
+                  const url = `${azureEndpoint}/translate`;
+                  const headers = {
+                    'Ocp-Apim-Subscription-Key': apiKey,
+                    'Content-Type': 'application/json',
+                    ...(azureRegion ? { 'Ocp-Apim-Subscription-Region': azureRegion } : {}),
+                  };
+                  console.log('DEBUG: Requesting Azure:', url);
+                  console.log('DEBUG: Headers:', JSON.stringify(headers, null, 2));
+
+                  const response = await axios.post(url, [{ Text: String(baseObj[key]) }], {
+                    params: {
+                      'api-version': '3.0',
+                      from: baseLanguage,
+                      to: targetLang,
                     },
-                  );
+                    headers,
+                  });
                   if (
                     response.data &&
                     response.data[0] &&

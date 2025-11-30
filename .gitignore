@@ -3,3 +3,5 @@ dist
 .env
 coverage
 .DS_Store
+
+dist-site
